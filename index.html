@@ -1,128 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sq">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WeConnect Kosova</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeConnectKS - Ballina</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <header class="navbar">
-    <div class="container">
-      <h1 class="logo">WeConnect Kosova</h1>
-      <nav>
-        <ul>
-          <li><a href="#">Ballina</a></li>
-          <li><a href="#">Evente</a></li>
-          <li><a href="#">Komunitetet</a></li>
-          <li><a href="#">Forumi</a></li>
-          <li><a href="#">Rreth nesh</a></li>
-          <li><a href="#">Kontakt</a></li>
-        </ul>
-      </nav>
-      <div class="auth-buttons">
-        <a href="#" class="btn-login">Kyqu</a>
-        <a href="#" class="btn-register">Regjistrohu</a>
-      </div>
-    </div>
-  </header>
-  <main class="hero-section">
-    <div class="container">
-      <div class="hero-content">
-        <h1>Bashkohuni me Komunitetin Tuaj</h1>
-        <p>Zbuloni evente locale, grupe komunitare dhe aktivitet qe ndajne pasionet tuaj ne Kosove</p>
-        <div class="hero-actions">
-          <button class="btn-primary">🔍 Zbuloni Eventet</button>
-          <button class="btn-secondary">Shfletoni Grupe ➡️</button>
-        </div>
-        <div class="stats">
-          <div class="stat-item">
-            <span class="stat-number">500+</span>
-            <span class="stat-label">Evente Aktive</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">150+</span>
-            <span class="stat-label">Grupe Komunitare</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">10k+</span>
-            <span class="stat-label">Anetare Aktive</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-categories">
-        <div class="category-card card-music">
-          <div class="card-icon">🎵</div>
-          <h3 class="card-title">Musike & Spektakel</h3>
-          <p class="card-subtitle">Koncerte dhe festivale</p>
-        </div>
-        <div class="category-card card-sport">
-          <div class="card-icon">🏃</div>
-          <h3 class="card-title">Sport</h3>
-          <p class="card-subtitle">Aktivitete Fizike</p>
-        </div>
-        <div class="category-card card-art">
-          <div class="card-icon">🎨</div>
-          <h3 class="card-title">Art & Kulture</h3>
-          <p class="card-subtitle">Ekspozita</p>
-        </div>
-      </div>
-    </div>
-  </main>
-  <section class="trending-events">
-    <div class="container">
-      <div class="section-header">
-        <h2>Eventet ne Trend</h2>
-        <a href="#" class="view-all">Shiko te gjitha</a>
-      </div>
-      <div class="events-grid">
-        <div class="event-card">
-          <div class="event-badge">Popullore</div>
-          <img src="photos/pexels-lstan-2147029.jpg" alt="Music Festival">
-          <div class="event-details">
-            <div class="event-date">12 Jan 2026</div>
-            <h3>Music Festival 2026</h3>
-            <p class="event-location">📍 Prishtine, Stadiumi i Qytetit</p>
-            <p class="event-description">Festivali me i madh muzikor ne rajon me artiste nderkombetare dhe lokale.</p>
-            <div class="event-stats">
-              <span>🎵 Muzike Live</span>
-              <span>👥 500+ Pjesemarres</span>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                ◆ WeConnect<span class="text-primary">KS</span>
             </div>
-            <button class="btn-primary btn-small">Rezervo Bilete</button>
-          </div>
-        </div>
-        <div class="event-card">
-          <div class="event-badge">Sport</div>
-          <img src="photos/pexels-pixabay-358042.jpg" alt="Basketball Finales">
-          <div class="event-details">
-            <div class="event-date">3 Shk 2026</div>
-            <h3>Basketball Finales</h3>
-            <p class="event-location">📍 Prizren, Pallati i Rinise dhe Sporteve</p>
-            <p class="event-description">Finalja e kampionatit kombetar te basketbollit.</p>
-            <div class="event-stats">
-              <span>🏀 Basketboll</span>
-              <span>👥 1,200+ Spektatorë</span>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Ballina</a></li>
+                <li><a href="#">Eventet</a></li>
+                <li><a href="#">Grupet</a></li>
+                <li><a href="#">Rreth Nesh</a></li>
+                <li><a href="#">Kontakt</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn-text">Hyni</a>
+                <a href="#" class="btn-primary">Regjistrohu</a>
             </div>
-            <button class="btn-primary btn-small">Rezervo Bilete</button>
-          </div>
         </div>
-        <div class="event-card">
-          <div class="event-badge">Kulture</div>
-          <img src="photos/photo-1470229722913-7c0e2dbbafd3.avif" alt="DokuFest">
-          <div class="event-details">
-            <div class="event-date">15 Jan 2026</div>
-            <h3>DokuFest 2026</h3>
-            <p class="event-location">📍 Prizren, Kino Lumbardhi</p>
-            <p class="event-description">Festivali nderkombetar i filmit dokumentar dhe te shkurter.</p>
-            <div class="event-stats">
-              <span>🎬 Film</span>
-              <span>👥 5,000+ Vizitore</span>
+    </nav>
+
+    <header class="hero-slider">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('photo/DSC04215.jpg');">
+            <div class="container slide-content">
+                <span class="badge badge-tech">TEKNOLOGJI</span>
+                <h1>KosICT 2025</h1>
+                <p>E ardhmja e teknologjise ne Tech Park Prishtina.</p>
+                <a href="#" class="btn-primary-large">Rezervo Vendin</a>
             </div>
-            <button class="btn-primary btn-small">Shiko Orarin</button>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('photo/Screenshot\ 2025-12-11\ 221523.png');">
+            <div class="container slide-content">
+                <span class="badge badge-art">ART URBAN</span>
+                <h1>Meeting of Styles</h1>
+                <p>Arti i rruges pushton kryeqytetin. Bashkohu me artiste nderkombëtare.</p>
+                <a href="#" class="btn-primary-large">Zbulo Lokacionet</a>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('photo/SHF_0271-scaled.jpg');">
+            <div class="container slide-content">
+                <span class="badge badge-top">TOP EVENT</span>
+                <h1>Sunny Hill 2025</h1>
+                <p>Festivali me i madh ne rajon rikthehet ne Prishtine.</p>
+                <a href="#" class="btn-primary-large">Merr Bilete</a>
+            </div>
+        </div>
+
+        <button class="slider-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="slider-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+    </header>
+
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="section-header-flex">
+                <div>
+                    <h2>Me te njohurat kete jave</h2>
+                    <p class="text-muted">Eventet qe po trendin ne platformen WeConnect.</p>
+                </div>
+                <a href="#" class="link-blue">Shiko Kalendarin e Plotë 📅</a>
+            </div>
+
+            <div class="trending-grid">
+                <div class="card trending-card">
+                    <div class="card-image">
+                        <span class="date-badge">14 QER - 17 QER</span>
+                        <img src="photo/408388d5-b3b3-43f7-832b-99a079d5aa3d_SOURCE.jfif" alt="Beer Fest">
+                    </div>
+                    <div class="card-body">
+                        <span class="tag tag-festival">Festival</span>
+                        <span class="location-text">Prishtine</span>
+                        <h3>Beer & Wine Fest 2025</h3>
+                        <p class="card-desc">Festivali veror me muzike live dhe pije vendore.</p>
+                        <div class="card-footer">
+                            <span class="price">Hyrja: 5€</span>
+                            <a href="#" class="btn-arrow" aria-label="Shfletoni më shumë">→</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card trending-card">
+                    <div class="card-image">
+                        <span class="date-badge">14 KOR - 20 KOR</span>
+                        <img src="photo/print_jusuf-gërvalla.png" alt="Anibar">
+                    </div>
+                    <div class="card-body">
+                        <span class="tag tag-art">Art & Kulture</span>
+                        <span class="location-text">Peje</span>
+                        <h3>Anibar Animation Fest</h3>
+                        <p class="card-desc">Kinema e animuar në Parkun Karaçe — punetori, muzike dhe filma.</p>
+                        <div class="card-footer">
+                            <span class="price">Hyrja: 8€</span>
+                            <a href="#" class="btn-arrow" aria-label="Shfletoni më shumë">→</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card trending-card">
+                    <div class="card-image">
+                        <span class="date-badge">13 SHT</span>
+                        <img src="photo/maratona.jpg" alt="Maratona">
+                    </div>
+                    <div class="card-body">
+                        <span class="tag tag-sport">Sport</span>
+                        <span class="location-text">Prishtine</span>
+                        <h3>Maratona e Prishtines</h3>
+                        <p class="card-desc">Behu pjesë e kauzes! Gara me e madhe e vrapimit në Prishtine 2025.</p>
+                        <div class="card-footer">
+                            <span class="price">Regjstrimi: 20€</span>
+                            <a href="#" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    
+
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3>WeConnect<span class="text-primary">KS</span></h3>
+                <p>Platforma qendrore per rinise e Kosoves. Gjej evente, bashkohu me grupe dhe behu pjese e ndryshimit.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Fast Links</h4>
+                <ul>
+                    <li><a href="#">Ballina</a></li>
+                    <li><a href="#">Eventet</a></li>
+                    <li><a href="#">Komuniteti</a></li>
+                    <li><a href="#">Rreth Nesh</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Na Ndiqni</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="X/Twitter">𝕏</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Facebook">f</a>
+                </div>
+                <p class="copyright">© 2025 WeConnect Kosova. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
