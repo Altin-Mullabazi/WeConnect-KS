@@ -6,10 +6,7 @@
     <title>WeConnectKS - Regjistrimi</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <meta name="description" content="Regjistrohu ne WeConnectKS per te gjetur evente dhe komunitete ne Kosove">
-    <style>
-        .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
-        .skip-link:focus{left:8px;top:8px;width:auto;height:auto;background:#fff;padding:8px;border-radius:4px;box-shadow:0 4px 12px rgba(2,6,23,.15)}
-    </style>
+
 </head>
 <body class="auth-page">
 
@@ -34,45 +31,45 @@
         </div>
     </nav>
 
-    <main id="main" class="section-padding" tabindex="-1">
+    <main id="main" class="section-padding">
         <div class="container">
             <div class="auth-wrapper">
-                <article class="auth-card" role="region" aria-labelledby="authTitle">
+                <article class="auth-card">
                     <h2 id="authTitle" class="auth-title">Krijo Llogarine</h2>
                     <p class="text-muted auth-sub">Regjistrohuni dhe gjeni eventet dhe komunitetet tuaja.</p>
 
-                    <div id="successMessage" class="success-message" role="status" aria-live="polite" hidden></div>
+                    <div id="successMessage" class="success-message"></div>
 
                     <form id="registerForm" novalidate>
                         <div class="form-group">
                             <label for="fullName">Emri i Plote</label>
-                            <input type="text" id="fullName" name="fullName" autocomplete="name" placeholder="Emri dhe Mbiemri" required aria-describedby="fullNameError">
-                            <div id="fullNameError" class="error-message" aria-live="assertive"></div>
+                            <input type="text" id="fullName" name="fullName" autocomplete="name" placeholder="Emri dhe Mbiemri" required>
+                            <div class="error-message"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Adresa e Email</label>
-                            <input type="email" id="email" name="email" autocomplete="email" placeholder="emri@email.com" required aria-describedby="emailError">
-                            <div id="emailError" class="error-message" aria-live="assertive"></div>
+                            <input type="email" id="email" name="email" autocomplete="email" placeholder="emri@email.com" required>
+                            <div class="error-message"></div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group half">
                                 <label for="password">Fjalekalimi</label>
-                                <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" placeholder="Password" required aria-describedby="passwordError">
-                                <div id="passwordError" class="error-message" aria-live="assertive"></div>
+                                <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" placeholder="Password" required>
+                                <div class="error-message"></div>
                             </div>
 
                             <div class="form-group half">
                                 <label for="confirmPassword">Konfirmo Fjalekalimin</label>
-                                <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" minlength="8" placeholder="Shkruaj prap fjalekalimin" required aria-describedby="confirmPasswordError">
-                                <div id="confirmPasswordError" class="error-message" aria-live="assertive"></div>
+                                <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" minlength="8" placeholder="Shkruaj prap fjalekalimin" required>
+                                <div class="error-message"></div>
                             </div>
                         </div>
 
                         <div class="form-group checkbox-group">
-                            <label class="checkbox-label"><input type="checkbox" id="terms" name="terms" aria-describedby="termsError"> Degjoj dhe pranoj <a href="#">Termat & Politiken e Privatesise</a></label>
-                            <div id="termsError" class="error-message" aria-live="assertive"></div>
+                            <label class="checkbox-label"><input type="checkbox" id="terms" name="terms"> Degjoj dhe pranoj <a href="#">Termat & Politiken e Privatesise</a></label>
+                            <div class="error-message"></div>
                         </div>
 
                         <button type="submit" class="btn-primary auth-submit">Krijo Llogarine</button>

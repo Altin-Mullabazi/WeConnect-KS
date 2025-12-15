@@ -1,111 +1,76 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registerForm');
-    const fullName = document.getElementById('fullName');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('confirmPassword');
-    const terms = document.getElementById('terms');
-    const successMessage = document.querySelector('.success-message');
+    const successMessage = document.getElementById('successMessage');
 
-    function showError(input, message) {
-        let err = null;
-        const described = input.getAttribute && input.getAttribute('aria-describedby');
-        if (described) err = document.getElementById(described);
-        if (!err) err = input.parentElement && input.parentElement.querySelector('.error-message');
+    function setError(input, message) {
+        const err = input.parentElement.querySelector('.error-message');
         if (err) err.textContent = message;
         input.classList.add('invalid');
-        input.setAttribute('aria-invalid', 'true');
     }
 
-    function clearError(input) {
-        const described = input.getAttribute && input.getAttribute('aria-describedby');
-        let err = null;
-        if (described) err = document.getElementById(described);
-        if (!err) err = input.parentElement && input.parentElement.querySelector('.error-message');
-        if (err) err.textContent = '';
-        input.classList.remove('invalid');
-        input.removeAttribute('aria-invalid');
+    function clearAll() {
+        document.querySelectorAll('.error-message').forEach(e => e.textContent = '');
+        document.querySelectorAll('input').forEach(i => i.classList.remove('invalid'));
+        successMessage.style.display = 'none';
+        successMessage.textContent = '';
     }
 
-    function isValidEmail(value) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    function isSimpleEmail(email) {
+        if (!email) return false;
+        email = email.trim();
+        const at = email.indexOf('@');
+        if (at <= 0) return false; 
+        const dot = email.indexOf('.', at + 2); 
+        if (dot === -1) return false;
+        if (dot === email.length - 1) return false;
+        return true;
     }
-
-    [fullName, email, password, confirmPassword].forEach(function (input) {
-        input.addEventListener('input', function () { clearError(input); });
-    });
-    terms.addEventListener('change', function () {
-        const checkboxErr = document.querySelector('.checkbox-group .error-message');
-        if (checkboxErr) checkboxErr.textContent = '';
-    });
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+        clearAll();
 
-        [fullName, email, password, confirmPassword].forEach(clearError);
-        const termsErrEl = document.getElementById('termsError');
-        if (termsErrEl) termsErrEl.textContent = '';
+        const nameEl = document.getElementById('fullName');
+        const emailEl = document.getElementById('email');
+        const passEl = document.getElementById('password');
+        const confirmEl = document.getElementById('confirmPassword');
+        const terms = document.getElementById('terms');
 
-        const invalidFields = [];
-
-        if (!fullName.value.trim()) {
-            showError(fullName, 'Emri eshte i detyrueshem');
-            invalidFields.push(fullName);
+        if (!nameEl.value.trim()) {
+            setError(nameEl, 'Shkruaj emrin tuaj');
+            nameEl.focus();
+            return;
         }
 
-        if (!email.value.trim()) {
-            showError(email, 'Email eshte i detyrueshem');
-            invalidFields.push(email);
-        } else if (!isValidEmail(email.value.trim())) {
-            showError(email, 'Adresa e email nuk eshte valide');
-            invalidFields.push(email);
+        if (!isSimpleEmail(emailEl.value)) {
+            setError(emailEl, 'Shkruaj nje email te vlefshem');
+            emailEl.focus();
+            return;
         }
 
-        if (!password.value) {
-            showError(password, 'Fjalekalimi eshte i detyrueshem');
-            invalidFields.push(password);
-        } else if (password.value.length < 8) {
-            showError(password, 'Fjalekalimi duhet te kete te pakten 8 karaktere');
-            invalidFields.push(password);
+        if (!passEl.value || passEl.value.length < 8) {
+            setError(passEl, 'Fjalekalimi duhet te kete te pakten 8 karaktere');
+            passEl.focus();
+            return;
         }
 
-        if (!confirmPassword.value) {
-            showError(confirmPassword, 'Konfirmimi eshte i detyrueshem');
-            invalidFields.push(confirmPassword);
-        } else if (password.value && confirmPassword.value !== password.value) {
-            showError(confirmPassword, 'Fjalekalimet nuk perputhen');
-            invalidFields.push(confirmPassword);
+        if (passEl.value !== confirmEl.value) {
+            setError(confirmEl, 'Fjalekalimet nuk perputhen');
+            confirmEl.focus();
+            return;
         }
 
         if (!terms.checked) {
-            if (termsErrEl) termsErrEl.textContent = 'Duhet te pranoni termat';
-            invalidFields.push(terms);
-        }
-
-        if (invalidFields.length > 0) {
-            
-            const first = invalidFields[0];
-            try { first.focus(); } catch (e) { }
+            setError(terms, 'Duhet te pranoni termat');
             return;
         }
 
         successMessage.textContent = 'Llogaria u krijua me sukses!';
-        successMessage.hidden = false;
-        successMessage.setAttribute('tabindex', '-1');
-        successMessage.focus();
-
+        successMessage.style.display = 'block';
         form.reset();
-        [fullName, email, password, confirmPassword].forEach(function (input) {
-            input.classList.remove('invalid');
-            clearError(input);
-        });
-
-        fullName.focus();
 
         setTimeout(function () {
-            successMessage.hidden = true;
-            successMessage.textContent = '';
-            successMessage.removeAttribute('tabindex');
-        }, 3500);
+            successMessage.style.display = 'none';
+        }, 3000);
     });
 });
