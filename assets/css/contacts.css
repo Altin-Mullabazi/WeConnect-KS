@@ -18,7 +18,7 @@ body, .contact-page {
 }
 
 .left-panel {
-    background-color: #2563eb;
+    background-color: #e3184e;
     color: white;
     flex: 1;
     padding: 50px;
@@ -145,7 +145,7 @@ form {
 }
 
 .btn-submit {
-    background-color: #2563eb;
+    background-color: #e3184e;;
     color: white;
     border: none;
     padding: 15px;
@@ -158,7 +158,7 @@ form {
 }
 
 .btn-submit:hover {
-    background-color: #1d4ed8;
+    background-color: #710f29;
 }
 
 @media (max-width: 768px) {
