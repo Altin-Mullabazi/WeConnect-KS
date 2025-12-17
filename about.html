@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeConnectKS - Rreth Nesh</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .about-hero {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+        }
+        .about-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .value-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .stat-section {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0;
+            margin-top: 40px;
+        }
+        .stat-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            text-align: center;
+            gap: 2rem;
+        }
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .team-member {
+            text-align: center;
+        }
+        .team-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <div class="logo-badge">W</div>
+                <div class="logo-text">
+                    <span class="logo-title">WeConnect</span>
+                    <span class="logo-subtitle">KOSOVA</span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Ballina</a></li>
+                <li><a href="#">Eventet</a></li>
+                <li><a href="#">Grupet</a></li>
+                <li><a href="about.html" class="active">Rreth Nesh</a></li>
+                <li><a href="contacts.html">Kontakt</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn-text">Hyni</a>
+                <a href="register.html" class="btn-primary">Regjistrohu</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-padding bg-light">
+            <div class="container">
+                <div class="about-hero">
+                    <span class="badge badge-tech" style="background-color: var(--primary); border: none;">Misioni Yne</span>
+                    <h1>Lidhja e Rinise, Fuqizimi i se Ardhmes</h1>
+                    <p class="text-muted" style="font-size: 1.1rem;">
+                        WeConnectKS eshte platforma qendrore digjitale per rinine e Kosoves. 
+                        Ne synojme te krijojme ura lidhese mes individeve, eventeve kulturore dhe mundesive per zhvillim.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="mb-5">Vlerat Tona Kryesore</h2>
+                </div>
+                
+                <div class="values-grid">
+                    <div class="value-card">
+                        <span class="value-icon">🎉</span>
+                        <h3>Komuniteti</h3>
+                        <p class="text-muted">Ne besojme ne fuqine e bashkimit. Platforma jone eshte ndertuar per te afruar njerezit me interesa te perbashketa.</p>
+                    </div>
+
+                    <div class="value-card">
+                        <span class="value-icon">🚀</span>
+                        <h3>Inovacioni</h3>
+                        <p class="text-muted">Promovojme teknologjine dhe idete e reja. Nga KosICT te punetorite digjitale, e ardhmja eshte ketu.</p>
+                    </div>
+
+                    <div class="value-card">
+                        <span class="value-icon">🎨</span>
+                        <h3>Kultura</h3>
+                        <p class="text-muted">Mbeshtesim artin dhe kulturen vendore. Festivale, ekspozita dhe muzike qe mbajne gjalle shpirtin e qytetit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stat-section">
+            <div class="container">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <h3>500+</h3>
+                        <p>Evente te Publikuara</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>10k+</h3>
+                        <p>Perdorues Aktive</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>30+</h3>
+                        <p>Qytete te Mbuluara</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <p>Mbeshtetje per Komunitetin</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding bg-light text-center">
+            <div class="container">
+                <h2 style="margin-bottom: 1rem;">Gati per te qene pjese e levizjes?</h2>
+                <p class="text-muted mb-5" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Mos humb eventet me te mira ne Prishtine dhe me gjere. Regjistrohu sot dhe zbulo mundesi te reja.
+                </p>
+                <a href="register.html" class="btn-primary-large">Bashkohu Tani</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="brand-badge">W</div>
+                <div class="brand-text">
+                    <h3>WeConnect</h3>
+                    <span class="brand-sub">KOSOVA</span>
+                    <p>Platforma per rinine e Kosoves. Gjej evente, bashkohu me grupe dhe behu pjese e ndryshimit.</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Fast Links</h4>
+                <ul>
+                    <li><a href="index.html">Ballina</a></li>
+                    <li><a href="#">Eventet</a></li>
+                    <li><a href="#">Komuniteti</a></li>
+                    <li><a href="about.html">Rreth Nesh</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h4>Na Ndiqni</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="X/Twitter">𝕏</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Facebook">f</a>
+                </div>
+                <p class="copyright">© 2025 WeConnect Kosova. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
