@@ -416,6 +416,11 @@ ul {
     background: #ede9fe;
 }
 
+.tag-tech {
+    color: #2563eb;
+    background: #dbeafe;
+}
+
 .tag-sport {
     color: #16a34a;
     background: #dcfce7;
@@ -743,8 +748,127 @@ ul {
     color: #64748b;
 }
 
+.back-link {
+    color: var(--gray);
+    margin-bottom: 30px;
+    display: inline-block;
+}
 
+.back-link:hover {
+    color: var(--primary);
+}
 
+.event-header {
+    margin-bottom: 50px;
+}
+
+.event-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+}
+
+.event-info {
+    max-width: 800px;
+}
+
+.event-info h1 {
+    font-size: 2.5rem;
+    margin: 20px 0 10px;
+}
+
+.event-date {
+    font-size: 1.1rem;
+    color: var(--gray);
+    margin: 10px 0;
+}
+
+.event-location {
+    font-size: 1rem;
+    color: var(--gray);
+}
+
+.event-details {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.event-main h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.event-main h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    margin-top: 30px;
+}
+
+.event-main p {
+    line-height: 1.8;
+    margin-bottom: 15px;
+    color: var(--gray);
+}
+
+.event-program {
+    list-style: none;
+    padding: 0;
+}
+
+.event-program li {
+    padding: 15px 0;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    gap: 20px;
+}
+
+.event-program li:last-child {
+    border-bottom: none;
+}
+
+.event-program strong {
+    min-width: 150px;
+    color: var(--dark);
+}
+
+.event-card {
+    background: var(--light);
+    padding: 25px;
+    border-radius: var(--border-radius);
+}
+
+.event-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--dark);
+}
+
+.detail-item {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-item strong {
+    color: var(--dark);
+}
+
+.detail-item span {
+    color: var(--gray);
+}
 
 @media (max-width: 768px) {
     .nav-links,
@@ -777,5 +901,14 @@ ul {
     }
     .social-icons {
         justify-content: center;
+    }
+    .event-details {
+        grid-template-columns: 1fr;
+    }
+    .event-image {
+        height: 250px;
+    }
+    .event-info h1 {
+        font-size: 2rem;
     }
 }

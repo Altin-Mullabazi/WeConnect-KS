@@ -1,46 +1,26 @@
 const form = document.getElementById("loginForm");
-if (!form) return;
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const successMessage = document.getElementById("successMessage");
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
-
-    clearErrors();
-
-    let isValid = true;
-
+    
     if (!email.value.trim()) {
-        showError(email, "Email eshte i detyrueshem");
-        isValid = false;
-    } else if (!isValidEmail(email.value)) {
-        showError(email, "Email nuk eshte valid");
-        isValid = false;
+        alert("Email eshte i detyrueshem");
+        return;
     }
-
+    
+    if (email.value.indexOf('@') === -1) {
+        alert("Email nuk eshte valid");
+        return;
+    }
+    
     if (!password.value.trim()) {
-        showError(password, "Fjalekalimi eshte i detyrueshem");
-        isValid = false;
+        alert("Fjalekalimi eshte i detyrueshem");
+        return;
     }
-
-    if (isValid) {
-        successMessage.textContent = "Hyrja u realizua me sukses!";
-        form.reset();
-    }
+    
+    successMessage.textContent = "Hyrja u realizua me sukses!";
+    form.reset();
 });
-
-function showError(input, message) {
-    const formGroup = input.parentElement;
-    const errorDiv = formGroup.querySelector(".error-message");
-    if (errorDiv) errorDiv.textContent = message;
-}
-
-function clearErrors() {
-    document.querySelectorAll(".error-message").forEach(err => err.textContent = "");
-    if (successMessage) successMessage.textContent = "";
-}
-
-function isValidEmail(email) {
-    return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
