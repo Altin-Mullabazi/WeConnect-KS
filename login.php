@@ -13,21 +13,25 @@
 
     <a class="skip-link" href="#main">Kaloni te permbajtja</a>
 
-    <nav class="navbar">
+   <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
-                ◆ WeConnect<span class="text-primary">KS</span>
+                <div class="logo-badge">W</div>
+                <div class="logo-text">
+                    <span class="logo-title">WeConnect</span>
+                    <span class="logo-subtitle">KOSOVA</span>
+                </div>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Ballina</a></li>
-                <li><a href="events.html">Eventet</a></li>
-                <li><a href="groups.html">Grupet</a></li>
-                <li><a href="about.html">Rreth Nesh</a></li>
-                <li><a href="contacts.html">Kontakt</a></li>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="events.php">Eventet</a></li>
+                <li><a href="groups.php">Grupet</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="contacts.php">Kontakt</a></li>
             </ul>
             <div class="auth-buttons">
-                <a href="login.html" class="btn-primary">Hyni</a>
-                <a href="register.html" class="btn-text">Regjistrohu</a>
+                <a href="login.php" class="btn-text">Hyni</a>
+                <a href="register.php" class="btn-primary">Regjistrohu</a>
             </div>
         </div>
     </nav>
@@ -82,7 +86,6 @@
                             Hyni
                         </button>
                     </form>
-
                     <p class="auth-footer">
                         Nuk keni llogari?
                         <a href="register.html">Regjistrohu</a>
@@ -92,6 +95,8 @@
             </div>
         </div>
     </main>
+
+    <?php require_once 'includes/footer.php'; ?>
 
     <script src="assets/js/login.js" defer></script>
 </body>

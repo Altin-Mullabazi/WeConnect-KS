@@ -177,36 +177,7 @@
 
     </main>
 
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <div class="brand-badge">W</div>
-                <div class="brand-text">
-                    <h3>WeConnect</h3>
-                    <span class="brand-sub">KOSOVA</span>
-                    <p>Platforma per rinine e Kosoves. Gjej komunitete, bashkohu me njerez me interesa te ngjashme dhe krijo lidhje te reja.</p>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h4>Fast Links</h4>
-                <ul>
-                    <li><a href="index.html">Ballina</a></li>
-                    <li><a href="events.html">Eventet</a></li>
-                    <li><a href="#">Komuniteti</a></li>
-                    <li><a href="about.html">Rreth Nesh</a></li>
-                </ul>
-            </div>
-            <div class="footer-social">
-                <h4>Na Ndiqni</h4>
-                <div class="social-icons">
-                    <a href="#" aria-label="X/Twitter">𝕏</a>
-                    <a href="#" aria-label="Instagram">📷</a>
-                    <a href="#" aria-label="Facebook">f</a>
-                </div>
-                <p class="copyright">© 2025 WeConnect Kosova. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <?php require_once 'includes/footer.php'; ?>
 
     <script src="script.js"></script>
 </body>

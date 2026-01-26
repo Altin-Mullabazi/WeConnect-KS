@@ -19,15 +19,15 @@
                 </div>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Ballina</a></li>
-                <li><a href="events.html">Eventet</a></li>
-                <li><a href="groups.html">Grupet</a></li>
-                <li><a href="about.html">Rreth Nesh</a></li>
-                <li><a href="contacts.html" class="active">Kontakt</a></li>
+                <li><a href="index.php">Ballina</a></li>
+                <li><a href="events.php">Eventet</a></li>
+                <li><a href="groups.php">Grupet</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="contacts.php" class="active">Kontakt</a></li>
             </ul>
             <div class="auth-buttons">
-                <a href="login.html" class="btn-text">Hyni</a>
-                <a href="register.html" class="btn-primary">Regjistrohu</a>
+                <a href="login.php" class="btn-text">Hyni</a>
+                <a href="register.php" class="btn-primary">Regjistrohu</a>
             </div>
         </div>
     </nav>
@@ -98,36 +98,7 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <div class="brand-badge">W</div>
-                <div class="brand-text">
-                    <h3>WeConnect</h3>
-                    <span class="brand-sub">KOSOVA</span>
-                    <p>Platforma per rinine e Kosoves.</p>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h4>Fast Links</h4>
-                <ul>
-                    <li><a href="index.html">Ballina</a></li>
-                    <li><a href="events.html">Eventet</a></li>
-                    <li><a href="#">Komuniteti</a></li>
-                    <li><a href="about.html">Rreth Nesh</a></li>
-                </ul>
-            </div>
-            <div class="footer-social">
-                <h4>Na Ndiqni</h4>
-                <div class="social-icons">
-                    <a href="#" aria-label="X/Twitter">𝕏</a>
-                    <a href="#" aria-label="Instagram">📷</a>
-                    <a href="#" aria-label="Facebook">f</a>
-                </div>
-                <p class="copyright">© 2025 WeConnect Kosova</p>
-            </div>
-        </div>
-    </footer>
+    <?php require_once 'includes/footer.php'; ?>
 
     <script src="assets/js/contacts.js" defer></script>
 </body>
