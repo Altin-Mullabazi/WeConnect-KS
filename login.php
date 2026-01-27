@@ -1,11 +1,69 @@
+<?php
+require_once 'includes/db.php';
+
+session_start();
+
+
+$email = '';
+$emailError = '';
+$passwordError = '';
+$successMessage = '';
+$isSubmitted = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $isSubmitted = true;
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    
+    if (empty($email)) {
+        $emailError = "Email-i nuk mund të jetë bosh";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Formati i email-it nuk është i vlefshëm";
+    } else {
+        try {
+            $pdo = new PDO(
+                'mysql:host=localhost;dbname=weconnect-ks;charset=utf8mb4',
+                'root',
+                ''
+            );
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $stmt = $pdo->prepare('SELECT PASSWORD FROM users WHERE email = ?');
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if (!$user) {
+                $emailError = "Email-i nuk ekziston në bazën e të dhënave";
+            } else {
+                if (empty($password)) {
+                    $passwordError = "Fjalëkalimi nuk mund të jetë bosh";
+                } elseif (!password_verify($password, $user['PASSWORD'])) {
+                    $passwordError = "Fjalëkalimi është i pasaktë";
+                } else {
+                    $_SESSION['user_email'] = $email;
+                    $successMessage = "Mirë se u përshëndetë! Hyja brenda...";
+                    header("refresh:2;url=index.php");
+                    $email = '';
+                }
+            }
+        } catch (PDOException $e) {
+            error_log("Database error: " . $e->getMessage());
+        }
+    }
+    
+    if ($emailError && empty($password)) {
+        $passwordError = "Fjalëkalimi nuk mund të jetë bosh";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="sq">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeConnectKS - Hyni</title>
-
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/login.css">
     <meta name="description" content="Hyni ne WeConnectKS per te gjetur evente dhe komunitete ne Kosove">
 </head>
 
@@ -13,7 +71,7 @@
 
     <a class="skip-link" href="#main">Kaloni te permbajtja</a>
 
-   <nav class="navbar">
+    <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
                 <div class="logo-badge">W</div>
@@ -45,9 +103,11 @@
                         Hyni per te vazhduar ne WeConnectKS
                     </p>
 
-                    <div id="successMessage" class="success-message"></div>
+                    <?php if ($successMessage): ?>
+                        <div class="success-message"><?php echo htmlspecialchars($successMessage); ?></div>
+                    <?php endif; ?>
 
-                    <form id="loginForm" novalidate>
+                    <form method="POST" novalidate>
 
                         <div class="form-group">
                             <label for="email">Adresa e Email</label>
@@ -57,9 +117,13 @@
                                 name="email"
                                 placeholder="emri@email.com"
                                 autocomplete="email"
+                                value="<?php echo htmlspecialchars($email); ?>"
+                                class="<?php echo $emailError ? 'has-error' : ''; ?>"
                                 required
                             >
-                            <div class="error-message"></div>
+                            <?php if ($emailError): ?>
+                                <div class="error-message"><?php echo htmlspecialchars($emailError); ?></div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
@@ -70,14 +134,17 @@
                                 name="password"
                                 placeholder="Shkruani fjalekalimin"
                                 autocomplete="current-password"
+                                class="<?php echo $passwordError ? 'has-error' : ''; ?>"
                                 required
                             >
-                            <div class="error-message"></div>
+                            <?php if ($passwordError): ?>
+                                <div class="error-message"><?php echo htmlspecialchars($passwordError); ?></div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" id="rememberMe">
+                                <input type="checkbox" id="rememberMe" name="rememberMe">
                                 Me mbaj mend
                             </label>
                         </div>
@@ -88,7 +155,7 @@
                     </form>
                     <p class="auth-footer">
                         Nuk keni llogari?
-                        <a href="register.html">Regjistrohu</a>
+                        <a href="register.php">Regjistrohu</a>
                     </p>
 
                 </article>

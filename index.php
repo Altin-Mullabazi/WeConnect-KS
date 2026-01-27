@@ -18,7 +18,7 @@
                 </div>
             </div>
             <ul class="nav-links">
-                <li><a href="#" class="active">Ballina</a></li>
+                <li><a href="#" class="active">Ballina</a></li>        
                 <li><a href="events.php">Eventet</a></li>
                 <li><a href="groups.php">Grupet</a></li>
                 <li><a href="about.php">Rreth Nesh</a></li>

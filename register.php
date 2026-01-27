@@ -1,16 +1,5 @@
 <?php
-
-$host = 'localhost';
-$dbname = 'weconnect-ks';
-$user = 'root';
-$pass = '';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Gabim ne lidhjen me databazene: " . $e->getMessage());
-}
+require_once 'includes/db.php';
 
 
 $fullName = '';
