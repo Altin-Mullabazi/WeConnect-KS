@@ -108,7 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeConnectKS - Regjistrimi</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/register.css">
     <meta name="description" content="Regjistrohu ne WeConnectKS per te gjetur evente dhe komunitete ne Kosove">
 </head>
 <body class="auth-page">

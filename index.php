@@ -19,14 +19,14 @@
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="active">Ballina</a></li>
-                <li><a href="events.html">Eventet</a></li>
-                <li><a href="groups.html">Grupet</a></li>
-                <li><a href="about.html">Rreth Nesh</a></li>
-                <li><a href="contacts.html">Kontakt</a></li>
+                <li><a href="events.php">Eventet</a></li>
+                <li><a href="groups.php">Grupet</a></li>
+                <li><a href="about.php">Rreth Nesh</a></li>
+                <li><a href="contacts.php">Kontakt</a></li>
             </ul>
             <div class="auth-buttons">
-                <a href="login.html" class="btn-text">Hyni</a>
-                <a href="register.html" class="btn-primary">Regjistrohu</a>
+                <a href="login.php" class="btn-text">Hyni</a>
+                <a href="register.php" class="btn-primary">Regjistrohu</a>
             </div>
         </div>
     </nav>

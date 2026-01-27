@@ -7,10 +7,10 @@
             <div class="footer-links">
                 <h4>Fast Links</h4>
                 <ul>
-                    <li><a href="index.html">Ballina</a></li>
-                    <li><a href="events.html">Eventet</a></li>
-                    <li><a href="groups.html">Komuniteti</a></li>
-                    <li><a href="about.html">Rreth Nesh</a></li>
+                    <li><a href="index.php">Ballina</a></li>
+                    <li><a href="events.php">Eventet</a></li>
+                    <li><a href="groups.php">Komuniteti</a></li>
+                    <li><a href="about.php">Rreth Nesh</a></li>
                 </ul>
             </div>
             <div class="footer-social">
