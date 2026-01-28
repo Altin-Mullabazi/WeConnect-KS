@@ -77,28 +77,7 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <div class="logo-badge">W</div>
-                <div class="logo-text">
-                    <span class="logo-title">WeConnect</span>
-                    <span class="logo-subtitle">KOSOVA</span>
-                </div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.php">Ballina</a></li>
-                <li><a href="events.php">Eventet</a></li>
-                <li><a href="groups.php">Grupet</a></li>
-                <li><a href="about.php" class="active">Rreth Nesh</a></li>
-                <li><a href="contacts.php">Kontakt</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <a href="login.php" class="btn-text">Hyni</a>
-                <a href="register.php" class="btn-primary">Regjistrohu</a>
-            </div>
-        </div>
-    </nav>
+    <?php require_once 'includes/header.php'; ?>
 
     <main>
         <section class="section-padding bg-light" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&h=1080&fit=crop'); background-size: cover; background-position: center; background-attachment: fixed;">

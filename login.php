@@ -3,6 +3,10 @@ require_once 'includes/db.php';
 
 session_start();
 
+if (isset($_SESSION['user_id'])) {
+    header('Location: dashboard.php');
+    exit;
+}
 
 $email = '';
 $emailError = '';
@@ -21,14 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $emailError = "Formati i email-it nuk është i vlefshëm";
     } else {
         try {
-            $pdo = new PDO(
-                'mysql:host=localhost;dbname=weconnect-ks;charset=utf8mb4',
-                'root',
-                ''
-            );
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            $stmt = $pdo->prepare('SELECT PASSWORD FROM users WHERE email = ?');
+            $stmt = $pdo->prepare('SELECT id, full_name, email, PASSWORD, role FROM users WHERE email = ?');
             $stmt->execute([$email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
@@ -40,14 +38,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } elseif (!password_verify($password, $user['PASSWORD'])) {
                     $passwordError = "Fjalëkalimi është i pasaktë";
                 } else {
-                    $_SESSION['user_email'] = $email;
-                    $successMessage = "Mirë se u përshëndetë! Hyja brenda...";
-                    header("refresh:2;url=index.php");
-                    $email = '';
+                  
+                    $_SESSION['user_id'] = (int) $user['id'];
+                    $_SESSION['user_email'] = $user['email'];
+                    $_SESSION['full_name'] = $user['full_name'];
+                    $_SESSION['role'] = $user['role'] ?? 'user';
+
+                    $successMessage = "Mirë se erdhët, " . htmlspecialchars($user['full_name']) . "!";
+                    header("Location: dashboard.php");
+                    exit;
                 }
             }
         } catch (PDOException $e) {
             error_log("Database error: " . $e->getMessage());
+            $emailError = "Ndodhi një gabim në server. Ju lutem provoni përsëri.";
         }
     }
     
