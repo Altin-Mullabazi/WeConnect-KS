@@ -184,7 +184,7 @@ $initials = getInitials($fullName);
                         <div class="dashboard-empty dashboard-empty-illustration">
                             <div class="empty-illustration-icon">✨</div>
                             <p>Nuk ka ende evente ku je bashkuar.</p>
-                            <?php if ($role === 'organizer'): ?>
+                            <?php if ($role === 'organizer' || $role === 'admin'): ?>
                                 <a href="create_event.php" class="quick-action-btn primary full-width">
                                     Krijo eventin tënd të parë
                                 </a>

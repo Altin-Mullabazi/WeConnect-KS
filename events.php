@@ -1,3 +1,11 @@
+<?php
+require_once 'includes/db.php';
+session_start();
+
+$isLoggedIn = isset($_SESSION['user_id']);
+$role = $_SESSION['role'] ?? 'user';
+?>
+
 <!DOCTYPE html>
 <html lang="sq">
 <head>
@@ -7,9 +15,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
-  
-    <?php include 'includes/header.php'; ?>
+    <?php require_once 'includes/header.php'; ?>
      
 
     <section class="section-padding">
@@ -19,6 +25,9 @@
                     <h2>Te gjitha eventet dhe klubet</h2>
                     <p class="text-muted">Ketu gjen komunitetin tend. Nga book clubs dhe movie nights deri te festivalet dhe eventet speciale - krijo lidhje me njerez qe ndajne interesat e tua.</p>
                 </div>
+                <?php if ($isLoggedIn && ($role === 'organizer' || $role === 'admin')): ?>
+                    <a href="create_event.php" class="btn-primary" style="align-self: center; white-space: nowrap;">+ Krijo Event</a>
+                <?php endif; ?>
             </div>
 
             <div class="trending-grid">
@@ -157,7 +166,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card trending-card">
                     <div class="card-image">
                         <span class="date-badge">13 SHT</span>
