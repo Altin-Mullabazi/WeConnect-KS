@@ -1,15 +1,16 @@
 <?php
-require_once 'includes/db.php';
-session_start();
+require_once 'includes/services/AuthService.php';
+require_once 'includes/core/Database.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
+$authService = new AuthService();
+$authService->requireLogin();
 
-$userId = (int) $_SESSION['user_id'];
-$fullName = $_SESSION['full_name'] ?? 'Përdorues';
-$role = $_SESSION['role'] ?? 'user';
+$db = Database::getInstance();
+$userId = $authService->getCurrentUserId();
+$user = $authService->getCurrentUser();
+
+$fullName = $user['full_name'] ?? ($user['emri'] ?? '') . ' ' . ($user['mbiemri'] ?? '');
+$role = $user['role'] ?? 'user';
 
 $eventsCount = 0;
 $groupsCount = 0;
@@ -17,55 +18,49 @@ $nextEvent = null;
 $myEvents = [];
 
 try {
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS total FROM event_participants WHERE user_id = ?');
-    $stmt->execute([$userId]);
-    $eventsCount = (int) ($stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0);
-} catch (PDOException $e) {
+    $result = $db->fetch('SELECT COUNT(*) AS total FROM event_participants WHERE user_id = ?', [$userId]);
+    $eventsCount = (int) ($result['total'] ?? 0);
+} catch (Exception $e) {
     error_log('Dashboard eventsCount error: ' . $e->getMessage());
 }
 
 try {
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS total FROM group_members WHERE user_id = ?');
-    $stmt->execute([$userId]);
-    $groupsCount = (int) ($stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0);
-} catch (PDOException $e) {
+    $result = $db->fetch('SELECT COUNT(*) AS total FROM group_members WHERE user_id = ?', [$userId]);
+    $groupsCount = (int) ($result['total'] ?? 0);
+} catch (Exception $e) {
     error_log('Dashboard groupsCount error: ' . $e->getMessage());
 }
 
 try {
-    $stmt = $pdo->prepare(
+    $nextEvent = $db->fetch(
         'SELECT e.title, e.event_date, e.location
          FROM events e
          INNER JOIN event_participants ep ON ep.event_id = e.id
          WHERE ep.user_id = ? AND e.event_date >= CURDATE()
          ORDER BY e.event_date ASC
-         LIMIT 1'
+         LIMIT 1',
+        [$userId]
     );
-    $stmt->execute([$userId]);
-    $nextEvent = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
-} catch (PDOException $e) {
+} catch (Exception $e) {
     error_log('Dashboard nextEvent error: ' . $e->getMessage());
 }
 
 try {
-    $stmt = $pdo->prepare(
+    $myEvents = $db->fetchAll(
         'SELECT e.title, e.event_date, e.location
          FROM events e
          INNER JOIN event_participants ep ON ep.event_id = e.id
          WHERE ep.user_id = ?
          ORDER BY e.event_date ASC
-         LIMIT 5'
+         LIMIT 5',
+        [$userId]
     );
-    $stmt->execute([$userId]);
-    $myEvents = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
+} catch (Exception $e) {
     error_log('Dashboard myEvents error: ' . $e->getMessage());
 }
 
 function formatEventDate(?string $date): ?string {
-    if (!$date) {
-        return null;
-    }
+    if (!$date) return null;
     try {
         $dt = new DateTime($date);
         return $dt->format('d M Y, H:i');
@@ -76,9 +71,7 @@ function formatEventDate(?string $date): ?string {
 
 function getInitials(string $name): string {
     $parts = preg_split('/\s+/', trim($name));
-    if (!$parts || $parts[0] === '') {
-        return 'U';
-    }
+    if (!$parts || $parts[0] === '') return 'U';
     $first = mb_substr($parts[0], 0, 1);
     $last = isset($parts[count($parts) - 1]) ? mb_substr($parts[count($parts) - 1], 0, 1) : '';
     return mb_strtoupper($first . $last);
@@ -254,4 +247,3 @@ $initials = getInitials($fullName);
 
 </body>
 </html>
-

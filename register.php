@@ -1,90 +1,62 @@
 <?php
-require_once 'includes/db.php';
+require_once 'includes/services/AuthService.php';
+require_once 'includes/core/Validator.php';
 
+$authService = new AuthService();
 
 $fullName = '';
 $email = '';
-$password = '';
-$confirmPassword = '';
 $success = false;
 $successMessage = '';
 $fieldErrors = [];
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-   
     $fullName = isset($_POST['fullName']) ? trim($_POST['fullName']) : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirmPassword = isset($_POST['confirmPassword']) ? $_POST['confirmPassword'] : '';
     $terms = isset($_POST['terms']);
 
-   
-    if (empty($fullName)) {
-        $fieldErrors['fullName'] = 'Emri i plote nuk mund te jete bosh.';
-    } elseif (strlen($fullName) < 3) {
-        $fieldErrors['fullName'] = 'Emri duhet te kete te pakten 3 karaktere.';
-    } elseif (strlen($fullName) > 100) {
-        $fieldErrors['fullName'] = 'Emri nuk mund te jete me i gjate se 100 karaktere.';
-    }
+    $validator = new Validator($_POST);
+    $validator
+        ->required('fullName', 'Emri i plote nuk mund te jete bosh.')
+        ->minLength('fullName', 3, 'Emri duhet te kete te pakten 3 karaktere.')
+        ->maxLength('fullName', 100, 'Emri nuk mund te jete me i gjate se 100 karaktere.')
+        ->required('email', 'Email-i nuk mund te jete bosh.')
+        ->email('email', 'Email-i nuk eshte valid.')
+        ->required('password', 'Fjalekalimi nuk mund te jete bosh.')
+        ->minLength('password', 8, 'Fjalekalimi duhet te kete te pakten 8 karaktere.')
+        ->required('confirmPassword', 'Konfirmimi i fjalekalimit nuk mund te jete bosh.')
+        ->match('password', 'confirmPassword', 'Fjalekalimet nuk perputhen.');
 
-    
-    if (empty($email)) {
-        $fieldErrors['email'] = 'Email-i nuk mund te jete bosh.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $fieldErrors['email'] = 'Email-i nuk eshte valid.';
-    }
-
-    
-    if (empty($password)) {
-        $fieldErrors['password'] = 'Fjalekalimi nuk mund te jete bosh.';
-    } elseif (strlen($password) < 8) {
-        $fieldErrors['password'] = 'Fjalekalimi duhet te kete te pakten 8 karaktere.';
-    }
-
-    
-    if (empty($confirmPassword)) {
-        $fieldErrors['confirmPassword'] = 'Konfirmimi i fjalekalimit nuk mund te jete bosh.';
-    } elseif ($password !== $confirmPassword) {
-        $fieldErrors['confirmPassword'] = 'Fjalekalimet nuk perputhen.';
-    }
-
-    
     if (!$terms) {
         $fieldErrors['terms'] = 'Duhet te pranoj Termat & Politiken e Privatesise.';
     }
 
-    
+    if (!$validator->isValid()) {
+        $fieldErrors = array_merge($fieldErrors, $validator->getErrors());
+    }
+
     if (empty($fieldErrors)) {
-        try {
-          
-            $checkEmail = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-            $checkEmail->execute([$email]);
+        $nameParts = explode(' ', $fullName, 2);
+        $emri = $nameParts[0];
+        $mbiemri = $nameParts[1] ?? '';
 
-            if ($checkEmail->rowCount() > 0) {
-                $fieldErrors['email'] = 'Ky email eshte tashme i regjistruar.';
-            } else {
-               
-                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $result = $authService->register([
+            'emri' => $emri,
+            'mbiemri' => $mbiemri,
+            'email' => $email,
+            'password' => $password,
+            'confirm_password' => $confirmPassword
+        ]);
 
-              
-                $stmt = $pdo->prepare("INSERT INTO users (full_name, email, PASSWORD, created_at) 
-                                      VALUES (?, ?, ?, NOW())");
-                
-                if ($stmt->execute([$fullName, $email, $hashedPassword])) {
-                    $success = true;
-                    $successMessage = 'Regjistrim i sukseshem! Tani mund te hyni me kredencialet tuaja.';
-                   
-                    $fullName = '';
-                    $email = '';
-                    $password = '';
-                    $confirmPassword = '';
-                } else {
-                    $fieldErrors['general'] = 'Regjistrimi deshtoi. Ju lutem provoni perseri.';
-                }
-            }
-        } catch (PDOException $e) {
-            $fieldErrors['general'] = 'Gabim ne serveri: ' . $e->getMessage();
+        if ($result['success']) {
+            $success = true;
+            $successMessage = 'Regjistrim i sukseshem! Tani mund te hyni me kredencialet tuaja.';
+            $fullName = '';
+            $email = '';
+        } else {
+            $fieldErrors['general'] = $result['error'];
         }
     }
 }
@@ -133,14 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 id="authTitle" class="auth-title">Krijo Llogarine</h2>
                     <p class="text-muted auth-sub">Regjistrohuni dhe gjeni eventet dhe komunitetet tuaja.</p>
 
-                   
                     <?php if ($success): ?>
                         <div class="success-message show">
                             ✓ <?php echo htmlspecialchars($successMessage); ?>
                         </div>
                     <?php endif; ?>
 
-                    
                     <?php if (isset($fieldErrors['general'])): ?>
                         <div class="general-error">
                             ✗ <?php echo htmlspecialchars($fieldErrors['general']); ?>
@@ -148,7 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
 
                     <form method="POST" novalidate>
-                        
                         <div class="form-group">
                             <label for="fullName">Emri i Plote</label>
                             <input 
@@ -181,9 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php endif; ?>
                         </div>
 
-                     
                         <div class="form-row">
-                      
                             <div class="form-group half">
                                 <label for="password">Fjalekalimi</label>
                                 <input 
@@ -200,7 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php endif; ?>
                             </div>
 
-                         
                             <div class="form-group half">
                                 <label for="confirmPassword">Konfirmo Fjalekalimin</label>
                                 <input 
@@ -218,7 +184,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
 
-                       
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
                                 <input type="checkbox" id="terms" name="terms" required>
@@ -229,7 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php endif; ?>
                         </div>
 
-                     
                         <button type="submit" class="btn-primary auth-submit">Krijo Llogarine</button>
                     </form>
 

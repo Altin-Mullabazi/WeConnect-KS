@@ -1,62 +1,28 @@
 <?php
-require_once 'includes/db.php';
+require_once 'includes/services/AuthService.php';
 
-session_start();
+$authService = new AuthService();
 
-if (isset($_SESSION['user_id'])) {
+if ($authService->isLoggedIn()) {
     header('Location: dashboard.php');
     exit;
 }
 
 $email = '';
-$emailError = '';
-$passwordError = '';
+$error = '';
 $successMessage = '';
-$isSubmitted = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $isSubmitted = true;
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     
-    if (empty($email)) {
-        $emailError = "Email-i nuk mund të jetë bosh";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailError = "Formati i email-it nuk është i vlefshëm";
-    } else {
-        try {
-            
-            $stmt = $pdo->prepare('SELECT id, full_name, email, PASSWORD, role FROM users WHERE email = ?');
-            $stmt->execute([$email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if (!$user) {
-                $emailError = "Email-i nuk ekziston në bazën e të dhënave";
-            } else {
-                if (empty($password)) {
-                    $passwordError = "Fjalëkalimi nuk mund të jetë bosh";
-                } elseif (!password_verify($password, $user['PASSWORD'])) {
-                    $passwordError = "Fjalëkalimi është i pasaktë";
-                } else {
-                  
-                    $_SESSION['user_id'] = (int) $user['id'];
-                    $_SESSION['user_email'] = $user['email'];
-                    $_SESSION['full_name'] = $user['full_name'];
-                    $_SESSION['role'] = $user['role'] ?? 'user';
-
-                    $successMessage = "Mirë se erdhët, " . htmlspecialchars($user['full_name']) . "!";
-                    header("Location: dashboard.php");
-                    exit;
-                }
-            }
-        } catch (PDOException $e) {
-            error_log("Database error: " . $e->getMessage());
-            $emailError = "Ndodhi një gabim në server. Ju lutem provoni përsëri.";
-        }
-    }
+    $result = $authService->login($email, $password);
     
-    if ($emailError && empty($password)) {
-        $passwordError = "Fjalëkalimi nuk mund të jetë bosh";
+    if ($result['success']) {
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $error = $result['error'];
     }
 }
 ?>
@@ -107,8 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         Hyni per te vazhduar ne WeConnectKS
                     </p>
 
-                    <?php if ($successMessage): ?>
-                        <div class="success-message"><?php echo htmlspecialchars($successMessage); ?></div>
+                    <?php if ($error): ?>
+                        <div class="error-message" style="margin-bottom: 1rem; padding: 0.75rem; background: #fee; border-radius: 6px; color: #c00;">
+                            <?php echo htmlspecialchars($error); ?>
+                        </div>
                     <?php endif; ?>
 
                     <form method="POST" novalidate>
@@ -122,12 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 placeholder="emri@email.com"
                                 autocomplete="email"
                                 value="<?php echo htmlspecialchars($email); ?>"
-                                class="<?php echo $emailError ? 'has-error' : ''; ?>"
                                 required
                             >
-                            <?php if ($emailError): ?>
-                                <div class="error-message"><?php echo htmlspecialchars($emailError); ?></div>
-                            <?php endif; ?>
                         </div>
 
                         <div class="form-group">
@@ -138,12 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 name="password"
                                 placeholder="Shkruani fjalekalimin"
                                 autocomplete="current-password"
-                                class="<?php echo $passwordError ? 'has-error' : ''; ?>"
                                 required
                             >
-                            <?php if ($passwordError): ?>
-                                <div class="error-message"><?php echo htmlspecialchars($passwordError); ?></div>
-                            <?php endif; ?>
                         </div>
 
                         <div class="form-group checkbox-group">
