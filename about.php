@@ -1,3 +1,16 @@
+<?php
+require_once 'includes/services/EventService.php';
+require_once 'includes/services/NewsService.php';
+require_once 'includes/repositories/UserRepository.php';
+
+$eventService = new EventService();
+$newsService = new NewsService();
+$userRepo = new UserRepository();
+
+$totalEvents = $eventService->getAll();
+$totalNews = $newsService->getTotalCount();
+$totalUsers = $userRepo->count();
+?>
 <!DOCTYPE html>
 <html lang="sq">
 <head>
@@ -125,16 +138,16 @@
             <div class="container">
                 <div class="stat-grid">
                     <div class="stat-item">
-                        <h3>500+</h3>
+                        <h3><?php echo count($totalEvents); ?>+</h3>
                         <p>Evente te Publikuara</p>
                     </div>
                     <div class="stat-item">
-                        <h3>10k+</h3>
+                        <h3><?php echo $totalUsers; ?>+</h3>
                         <p>Perdorues Aktive</p>
                     </div>
                     <div class="stat-item">
-                        <h3>30+</h3>
-                        <p>Qytete te Mbuluara</p>
+                        <h3><?php echo $totalNews; ?>+</h3>
+                        <p>Lajme te Publikuara</p>
                     </div>
                     <div class="stat-item">
                         <h3>24/7</h3>
@@ -150,7 +163,7 @@
                 <p class="text-muted mb-5" style="max-width: 600px; margin-left: auto; margin-right: auto;">
                     Nga book clubs deri te movie nights, nga game groups deri te running clubs - ketu gjen njerez qe ndajne interesat e tua. Regjistrohu dhe fillo te krijojsh lidhje te reja.
                 </p>
-                <a href="register.html" class="btn-primary-large">Bashkohu Me Ne</a>
+                <a href="register.php" class="btn-primary-large">Bashkohu Me Ne</a>
             </div>
         </section>
 

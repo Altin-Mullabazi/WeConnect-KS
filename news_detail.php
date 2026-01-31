@@ -38,7 +38,7 @@ if (!$item) {
                 <h1><?php echo htmlspecialchars($item['title']); ?></h1>
                 <p class="event-date"><?php echo date('d M Y', strtotime($item['created_at'])); ?></p>
                 <div class="event-main">
-                    <?php echo $item['content']; ?>
+                    <?php echo nl2br(htmlspecialchars($item['content'])); ?>
                 </div>
             </article>
         </div>

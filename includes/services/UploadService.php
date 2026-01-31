@@ -3,8 +3,8 @@
 class UploadService
 {
     private string $uploadDir;
-    private array $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    private int $maxSize = 5242880; // 5MB
+    private array $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+    private int $maxSize = 10485760; // 10MB
 
     public function __construct(string $uploadDir = 'uploads/')
     {
@@ -79,11 +79,6 @@ class UploadService
         return file_exists($this->uploadDir . $filename);
     }
 
-    private function generateUniqueFilename(string $extension): string
-    {
-        return uniqid('img_', true) . '.' . $extension;
-    }
-
     private function getExtensionFromMime(string $mimeType): string
     {
         $map = [
@@ -91,8 +86,15 @@ class UploadService
             'image/png' => 'png',
             'image/gif' => 'gif',
             'image/webp' => 'webp',
+            'application/pdf' => 'pdf',
         ];
         return $map[$mimeType] ?? 'bin';
+    }
+
+    private function generateUniqueFilename(string $extension): string
+    {
+        $prefix = $extension === 'pdf' ? 'pdf_' : 'img_';
+        return uniqid($prefix, true) . '.' . $extension;
     }
 
     private function getUploadErrorMessage(int $error): string

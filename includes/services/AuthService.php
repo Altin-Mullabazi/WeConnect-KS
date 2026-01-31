@@ -136,7 +136,8 @@ class AuthService
             return ['success' => false, 'error' => 'Përdoruesi nuk u gjet.'];
         }
 
-        if (!password_verify($currentPassword, $user['password'])) {
+        $storedPassword = $user['PASSWORD'] ?? $user['password'] ?? '';
+        if (!password_verify($currentPassword, $storedPassword)) {
             return ['success' => false, 'error' => 'Fjalëkalimi aktual nuk është i saktë.'];
         }
 

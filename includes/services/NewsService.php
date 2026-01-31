@@ -15,7 +15,7 @@ class NewsService
         $this->uploadService = new UploadService('uploads/news/');
     }
 
-    public function create(array $data, ?array $imageFile = null): array
+    public function create(array $data, ?array $imageFile = null, ?array $pdfFile = null): array
     {
         $validator = new Validator($data);
         $validator
@@ -35,10 +35,22 @@ class NewsService
             $imagePath = $uploadResult['filename'];
         }
 
+        $pdfPath = null;
+        if ($pdfFile && !empty($pdfFile['tmp_name'])) {
+            $pdfUploadService = new UploadService('uploads/news/');
+            $pdfUploadService->setAllowedTypes(['application/pdf']);
+            $uploadResult = $pdfUploadService->upload($pdfFile);
+            if (!$uploadResult['success']) {
+                return $uploadResult;
+            }
+            $pdfPath = $uploadResult['filename'];
+        }
+
         $newsId = $this->newsRepo->insert([
             'title' => Validator::sanitize($data['title']),
             'content' => $data['content'],
             'image' => $imagePath,
+            'pdf_file' => $pdfPath,
             'category' => Validator::sanitize($data['category'] ?? ''),
             'user_id' => $data['user_id'] ?? 0
         ]);
@@ -46,7 +58,7 @@ class NewsService
         return ['success' => true, 'news_id' => $newsId];
     }
 
-    public function update(int $id, array $data, ?array $imageFile = null): array
+    public function update(int $id, array $data, ?array $imageFile = null, ?array $pdfFile = null): array
     {
         $news = $this->newsRepo->findById($id);
         if (!$news) {
@@ -79,6 +91,19 @@ class NewsService
             $updateData['image'] = $uploadResult['filename'];
         }
 
+        if ($pdfFile && !empty($pdfFile['tmp_name'])) {
+            $pdfUploadService = new UploadService('uploads/news/');
+            $pdfUploadService->setAllowedTypes(['application/pdf']);
+            $uploadResult = $pdfUploadService->upload($pdfFile);
+            if (!$uploadResult['success']) {
+                return $uploadResult;
+            }
+            if ($news['pdf_file']) {
+                $pdfUploadService->delete($news['pdf_file']);
+            }
+            $updateData['pdf_file'] = $uploadResult['filename'];
+        }
+
         $this->newsRepo->update($id, $updateData);
         return ['success' => true];
     }
@@ -92,6 +117,11 @@ class NewsService
 
         if ($news['image']) {
             $this->uploadService->delete($news['image']);
+        }
+
+        if ($news['pdf_file']) {
+            $pdfUploadService = new UploadService('uploads/news/');
+            $pdfUploadService->delete($news['pdf_file']);
         }
 
         $this->newsRepo->delete($id);

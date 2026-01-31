@@ -6,6 +6,7 @@ class News
     public string $title = '';
     public string $content = '';
     public ?string $image = null;
+    public ?string $pdf_file = null;
     public string $category = '';
     public int $user_id = 0;
     public ?string $created_at = null;
@@ -32,6 +33,7 @@ class News
             'title' => $this->title,
             'content' => $this->content,
             'image' => $this->image,
+            'pdf_file' => $this->pdf_file,
             'category' => $this->category,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,

@@ -166,7 +166,7 @@ $initials = getInitials($fullName);
                 <div class="dashboard-column">
                     <div class="dashboard-section-header">
                         <h2>Eventet e mia</h2>
-                        <a href="my_events.php" class="dashboard-link">Shiko të gjitha</a>
+                        <a href="events.php" class="dashboard-link">Shiko të gjitha</a>
                     </div>
 
                     <?php if (!empty($myEvents)): ?>

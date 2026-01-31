@@ -15,7 +15,7 @@
                 <span class="badge badge-art">KOMUNITET</span>
                 <h1>Klubi i Librave Prishtina</h1>
                 <p>Bashkohu me ne per diskutime te gjalla rreth librave. Gjej njerez me interesa te ngjashme dhe krijoni lidhje te reja.</p>
-                <a href="events.html" class="btn-primary-large">Bashkohu</a>
+                <a href="events.php" class="btn-primary-large">Bashkohu</a>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
                 <span class="badge badge-art">KOMUNITET</span>
                 <h1>Klubi i Filmit Prishtina</h1>
                 <p>Shiko filma dhe diskuto mesazhet e tyre me komunitetin. Ambiente miqesore per te gjithe dashamiret e kinemase.</p>
-                <a href="events.html" class="btn-primary-large">Zbulo Me Shume</a>
+                <a href="events.php" class="btn-primary-large">Zbulo Me Shume</a>
             </div>
         </div>
 
@@ -33,7 +33,7 @@
                 <span class="badge badge-sport">KOMUNITET</span>
                 <h1>Klubi i Vrapimit Prishtina</h1>
                 <p>Vrapo bashke me komunitetin. Nga fillestaret deri te profesionistet, te gjithe jane te mirepritur.</p>
-                <a href="events.html" class="btn-primary-large">Bashkohu Tani</a>
+                <a href="events.php" class="btn-primary-large">Bashkohu Tani</a>
             </div>
         </div>
 
@@ -45,10 +45,10 @@
         <div class="container">
             <div class="section-header-flex">
                 <div>
-                    <h2>Me te njohurat kete jave</h2>
+                    <h2>Me te shikuarat kete jave</h2>
                     <p class="text-muted">Klubet dhe eventet qe po terheqin komunitetin. Bashkohu me njerez qe ndajne interesat e tua dhe krijo lidhje te verteta.</p>
                 </div>
-                <a href="events.html" class="link-blue">Shiko te gjitha eventet 📅</a>
+                <a href="events.php" class="link-blue">Shiko te gjitha eventet 📅</a>
             </div>
 
             <div class="trending-grid">
@@ -64,7 +64,7 @@
                         <p class="card-desc">Diskuto librat me njerez qe duan te ndajne mendimet e tyre. Bashkohu per lexime dhe diskutime te gjalla.</p>
                         <div class="card-footer">
                             <span class="price">Falas</span>
-                            <a href="events.html" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
+                            <a href="events.php" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                         <p class="card-desc">Shiko filma dhe diskuto me komunitetin. Çdo jave nje film i ri dhe diskutim per mesazhin e tij.</p>
                         <div class="card-footer">
                             <span class="price">Falas</span>
-                            <a href="events.html" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
+                            <a href="events.php" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                         <p class="card-desc">Mblidhuni per te luajtur lojera tavoline dhe te njohesh njerez te rinj. Ambiente miqesore dhe argetuese.</p>
                         <div class="card-footer">
                             <span class="price">Falas</span>
-                            <a href="events.html" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
+                            <a href="events.php" class="btn-arrow" aria-label="Shfletoni me shume">→</a>
                         </div>
                     </div>
                 </div>

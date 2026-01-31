@@ -1,43 +1,23 @@
 <?php
-require_once 'includes/db.php';
+require_once 'includes/services/NewsService.php';
+
+$newsService = new NewsService();
 
 $category = isset($_GET['category']) ? trim($_GET['category']) : '';
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $perPage = 9;
-$offset = ($page - 1) * $perPage;
 
-$limit = (int) $perPage;
-$offset = (int) $offset;
-$categories = [];
-try {
-    $stmt = $pdo->query("SELECT DISTINCT category FROM news WHERE category != '' ORDER BY category");
-    $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
-} catch (PDOException $e) {
-}
+$categories = $newsService->getCategories();
 
-$newsList = [];
-$total = 0;
 if ($category !== '') {
-    try {
-        $stmt = $pdo->prepare('SELECT COUNT(*) FROM news WHERE category = ?');
-        $stmt->execute([$category]);
-        $total = (int) $stmt->fetchColumn();
-        $stmt = $pdo->prepare('SELECT * FROM news WHERE category = ? ORDER BY created_at DESC LIMIT ' . $limit . ' OFFSET ' . $offset);
-        $stmt->execute([$category]);
-        $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        $category = '';
-    }
+    $newsList = $newsService->getByCategory($category);
+    $total = count($newsList);
+} else {
+    $newsList = $newsService->getPaginated($page, $perPage);
+    $total = $newsService->getTotalCount();
 }
-if ($category === '') {
-    $stmt = $pdo->query('SELECT COUNT(*) FROM news');
-    $total = (int) $stmt->fetchColumn();
-    $stmt = $pdo->query('SELECT * FROM news ORDER BY created_at DESC LIMIT ' . $limit . ' OFFSET ' . $offset);
-    $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+
 $totalPages = $total ? (int) ceil($total / $perPage) : 1;
-
-
 ?>
 <!DOCTYPE html>
 <html lang="sq">

@@ -20,10 +20,10 @@ $role = $_SESSION['role'] ?? null;
         <ul class="nav-links">
             <li><a href="index.php">Ballina</a></li>
             <li><a href="events.php">Eventet</a></li>
+            <li><a href="news.php">Lajmet</a></li>
             <li><a href="groups.php">Grupet</a></li>
             <li><a href="about.php">Rreth Nesh</a></li>
             <li><a href="contacts.php">Kontakt</a></li>
-            <li><a href="news.php">Lajmet</a></li>
         </ul>
 
         <div class="auth-buttons">

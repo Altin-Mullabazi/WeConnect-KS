@@ -1,19 +1,30 @@
 <?php
 require_once 'auth.php';
-require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/services/NewsService.php';
+require_once __DIR__ . '/../includes/repositories/UserRepository.php';
+
+$newsService = new NewsService();
+$userRepo = new UserRepository();
 
 $page = max(1, (int) ($_GET['page'] ?? 1));
 $perPage = 15;
-$offset = ($page - 1) * $perPage;
-$total = (int) $pdo->query('SELECT COUNT(*) FROM news')->fetchColumn();
+$total = $newsService->getTotalCount();
 $totalPages = $total ? (int) ceil($total / $perPage) : 1;
 
-$stmt = $pdo->query('SELECT * FROM news ORDER BY created_at DESC LIMIT ' . $perPage . ' OFFSET ' . $offset);
-$list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$list = $newsService->getPaginated($page, $perPage);
+
+foreach ($list as &$item) {
+    if (!empty($item['user_id'])) {
+        $user = $userRepo->findById($item['user_id']);
+        $item['user_name'] = $user ? ($user['emri'] . ' ' . $user['mbiemri']) : 'E panjohur';
+    } else {
+        $item['user_name'] = 'E panjohur';
+    }
+}
 
 if (isset($_GET['delete']) && (int) $_GET['delete'] > 0) {
     $id = (int) $_GET['delete'];
-    $pdo->prepare('DELETE FROM news WHERE id = ?')->execute([$id]);
+    $newsService->delete($id);
     header('Location: news_list.php');
     exit;
 }
@@ -31,6 +42,7 @@ require_once 'header.php';
             <th>ID</th>
             <th>Titulli</th>
             <th>Kategoria</th>
+            <th>Krijuar nga</th>
             <th>Data</th>
             <th></th>
         </tr>
@@ -41,6 +53,7 @@ require_once 'header.php';
             <td><?php echo (int) $row['id']; ?></td>
             <td><?php echo htmlspecialchars($row['title']); ?></td>
             <td><?php echo htmlspecialchars($row['category'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($row['user_name']); ?></td>
             <td><?php echo date('d.m.Y', strtotime($row['created_at'])); ?></td>
             <td>
                 <a href="news_form.php?id=<?php echo (int) $row['id']; ?>" class="btn-sm btn-secondary">Ndrysho</a>

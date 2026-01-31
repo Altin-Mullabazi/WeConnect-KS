@@ -8,13 +8,14 @@ class Database
     private function __construct()
     {
         $host = 'localhost';
+        $port = '3307';
         $dbname = 'weconnect-ks';
         $user = 'root';
         $pass = '';
 
         try {
             $this->pdo = new PDO(
-                "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+                "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
                 $user,
                 $pass,
                 [

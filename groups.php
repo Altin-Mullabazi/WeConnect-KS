@@ -64,7 +64,7 @@
                         <p class="group-card-desc">Vrapo bashke me komunitetin. Nga fillestaret deri te profesionistet, te gjithe jane te mirepritur.</p>
                         <div class="group-card-footer">
                             <span class="members-count">👥 156 anëtarë</span>
-                            <button class="btn-join">Shfletoni</button>
+                            <button class="btn-join" data-name="Running Club Prishtina" data-category="Sport" data-location="Prishtina" data-members="156" data-desc="Vrapo bashke me komunitetin. Nga fillestaret deri te profesionistet, te gjithe jane te mirepritur." data-image="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=600&h=400&fit=crop">Shfletoni</button>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                         <p class="group-card-desc">Lojerat e tabeles jane pasioni yne. Nga Chess deri te Catan, bashkohu per serat e ndezura.</p>
                         <div class="group-card-footer">
                             <span class="members-count">👥 89 anëtarë</span>
-                            <button class="btn-join">Shfletoni</button>
+                            <button class="btn-join" data-name="Kosovo Board Gamers" data-category="Lojëra" data-location="Prishtina" data-members="89" data-desc="Lojerat e tabeles jane pasioni yne. Nga Chess deri te Catan, bashkohu per serat e ndezura." data-image="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&h=400&fit=crop">Shfletoni</button>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                         <p class="group-card-desc">Diskuto librat me njerez qe duan te ndajne mendimet e tyre. Bashkohu per lexime te gjalla.</p>
                         <div class="group-card-footer">
                             <span class="members-count">👥 203 anëtarë</span>
-                            <button class="btn-join">Shfletoni</button>
+                            <button class="btn-join" data-name="Book Club Prishtina" data-category="Libra" data-location="Prishtina" data-members="203" data-desc="Diskuto librat me njerez qe duan te ndajne mendimet e tyre. Bashkohu per lexime te gjalla." data-image="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop">Shfletoni</button>
                         </div>
                     </div>
                 </div>
@@ -212,8 +212,7 @@
     </div>
 
 
-    <?php require_once 'includes/footer.php'; ?>
-
     <script src="assets/js/groups.js"></script>
+    <?php require_once 'includes/footer.php'; ?>
 </body>
 </html>

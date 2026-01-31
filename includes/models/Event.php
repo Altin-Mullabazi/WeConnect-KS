@@ -7,11 +7,12 @@ class Event
     public string $description = '';
     public ?string $image = null;
     public string $event_date = '';
-    public string $event_time = '';
     public string $location = '';
     public string $category = '';
-    public int $user_id = 0;
+    public int $organizer_id = 0;
+    public int $max_participants = 0;
     public ?string $created_at = null;
+    public ?string $updated_at = null;
 
     public function __construct(array $data = [])
     {
@@ -36,11 +37,12 @@ class Event
             'description' => $this->description,
             'image' => $this->image,
             'event_date' => $this->event_date,
-            'event_time' => $this->event_time,
             'location' => $this->location,
             'category' => $this->category,
-            'user_id' => $this->user_id,
+            'organizer_id' => $this->organizer_id,
+            'max_participants' => $this->max_participants,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 

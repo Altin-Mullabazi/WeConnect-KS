@@ -1,20 +1,25 @@
 <?php
-require_once 'includes/db.php';
+require_once 'includes/services/EventService.php';
+require_once 'includes/services/AuthService.php';
+
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
+$authService = new AuthService();
+$eventService = new EventService();
+
+if (!$authService->isLoggedIn()) {
     header('Location: login.php');
     exit;
 }
-
 
 header("Cache-Control: no-cache, no-store, must-revalidate"); 
 header("Pragma: no-cache");
 header("Expires: 0"); 
 
-$userId = (int) $_SESSION['user_id'];
-$role = $_SESSION['role'] ?? 'user';
-$fullName = $_SESSION['full_name'] ?? 'Përdorues';
+$user = $authService->getCurrentUser();
+$userId = $authService->getCurrentUserId();
+$role = $user['role'] ?? 'user';
+$fullName = $user['full_name'] ?? ($user['emri'] ?? '') . ' ' . ($user['mbiemri'] ?? '');
 
 if ($role !== 'organizer' && $role !== 'admin') {
     header('Location: dashboard.php');
@@ -27,93 +32,55 @@ $eventData = [
     'title' => '',
     'description' => '',
     'event_date' => '',
+    'event_time' => '',
     'location' => '',
-    'category' => '',
-    'max_participants' => ''
+    'category' => ''
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $eventData['title'] = trim($_POST['title'] ?? '');
     $eventData['description'] = trim($_POST['description'] ?? '');
-    $eventData['event_date'] = $_POST['event_date'] ?? '';
+    $eventDateTime = $_POST['event_date'] ?? '';
     $eventData['location'] = trim($_POST['location'] ?? '');
     $eventData['category'] = trim($_POST['category'] ?? '');
-    $eventData['max_participants'] = (int) ($_POST['max_participants'] ?? 0);
-
-    if (empty($eventData['title']) || strlen($eventData['title']) < 3 || strlen($eventData['title']) > 200) {
-        $errors[] = 'Titull duhet të jetë 3-200 karaktere';
+    
+    if (!empty($eventDateTime)) {
+        $dateTime = new DateTime($eventDateTime);
+        $eventData['event_date'] = $dateTime->format('Y-m-d');
+        $eventData['event_time'] = $dateTime->format('H:i:s');
     }
 
-    if (empty($eventData['description']) || strlen($eventData['description']) < 10 || strlen($eventData['description']) > 5000) {
-        $errors[] = 'Përshkrimi duhet të jetë 10-5000 karaktere';
+    $imageFile = null;
+    if (isset($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
+        $imageFile = $_FILES['image'];
     }
 
-    if (empty($eventData['event_date'])) {
-        $errors[] = 'Data e eventit nuk mund të jetë bosh';
+    $data = [
+        'title' => $eventData['title'],
+        'description' => $eventData['description'],
+        'event_date' => $eventData['event_date'],
+        'event_time' => $eventData['event_time'],
+        'location' => $eventData['location'],
+        'category' => $eventData['category'],
+        'user_id' => $userId
+    ];
+
+    $result = $eventService->create($data, $imageFile);
+
+    if ($result['success']) {
+        $eventId = $result['event_id'];
+        $successMessage = 'Eventi u krijua me sukses!';
+        $eventData = [
+            'title' => '',
+            'description' => '',
+            'event_date' => '',
+            'event_time' => '',
+            'location' => '',
+            'category' => ''
+        ];
+        header("refresh:2;url=event.php?id=$eventId");
     } else {
-        $eventDateTime = new DateTime($eventData['event_date']);
-        $now = new DateTime();
-        if ($eventDateTime <= $now) {
-            $errors[] = 'Data e eventit duhet të jetë në të ardhmen';
-        }
-    }
-
-    if (empty($eventData['location']) || strlen($eventData['location']) < 3 || strlen($eventData['location']) > 255) {
-        $errors[] = 'Lokacioni duhet të jetë 3-255 karaktere';
-    }
-
-    if (empty($eventData['category'])) {
-        $errors[] = 'Kategoria është e detyrueshme';
-    }
-
-    if ($eventData['max_participants'] < 0 || $eventData['max_participants'] > 10000) {
-        $errors[] = 'Numri maksimal i pjesëmarrësve duhet të jetë 0-10000';
-    }
-
-    if (empty($errors)) {
-        try {
-            $stmt = $pdo->prepare("
-                INSERT INTO events (title, description, event_date, location, category, max_participants, organizer_id)
-                VALUES (:title, :description, :event_date, :location, :category, :max_participants, :organizer_id)
-            ");
-
-            $stmt->execute([
-                ':title' => $eventData['title'],
-                ':description' => $eventData['description'],
-                ':event_date' => $eventData['event_date'],
-                ':location' => $eventData['location'],
-                ':category' => $eventData['category'],
-                ':max_participants' => $eventData['max_participants'],
-                ':organizer_id' => $userId
-            ]);
-
-            $eventId = $pdo->lastInsertId();
-
-            $stmt = $pdo->prepare("
-                INSERT INTO event_participants (event_id, user_id)
-                VALUES (:event_id, :user_id)
-            ");
-            $stmt->execute([
-                ':event_id' => $eventId,
-                ':user_id' => $userId
-            ]);
-
-            $successMessage = 'Eventi u krijua me sukses!';
-            $eventData = [
-                'title' => '',
-                'description' => '',
-                'event_date' => '',
-                'location' => '',
-                'category' => '',
-                'max_participants' => ''
-            ];
-
-            header("refresh:2;url=event.php?id=$eventId");
-
-        } catch (PDOException $e) {
-            error_log('Create event error: ' . $e->getMessage());
-            $errors[] = 'Ndodhi një gabim në server. Provoni përsëri.';
-        }
+        $errors[] = $result['error'] ?? 'Ndodhi një gabim në server. Provoni përsëri.';
     }
 }
 
@@ -157,7 +124,7 @@ $categories = ['Teknologji', 'Sport', 'Kultura', 'Biznes', 'Edukimi', 'Muzikë',
                 </div>
             <?php endif; ?>
 
-            <form method="POST" class="create-event-form" id="eventForm">
+            <form method="POST" enctype="multipart/form-data" class="create-event-form" id="eventForm">
                 <div class="form-group">
                     <label for="title">Titull i Eventit *</label>
                     <input 
@@ -214,34 +181,30 @@ $categories = ['Teknologji', 'Sport', 'Kultura', 'Biznes', 'Edukimi', 'Muzikë',
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="category">Kategoria *</label>
-                        <select id="category" name="category" required>
-                            <option value="">-- Zgjidh Kategorinë --</option>
-                            <?php foreach ($categories as $cat): ?>
-                                <option 
-                                    value="<?php echo htmlspecialchars($cat); ?>"
-                                    <?php echo $eventData['category'] === $cat ? 'selected' : ''; ?>
-                                >
-                                    <?php echo htmlspecialchars($cat); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label for="category">Kategoria *</label>
+                    <select id="category" name="category" required>
+                        <option value="">-- Zgjidh Kategorinë --</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option 
+                                value="<?php echo htmlspecialchars($cat); ?>"
+                                <?php echo $eventData['category'] === $cat ? 'selected' : ''; ?>
+                            >
+                                <?php echo htmlspecialchars($cat); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <label for="max_participants">Numri Maksimal i Pjesëmarrësve</label>
-                        <input 
-                            type="number" 
-                            id="max_participants" 
-                            name="max_participants" 
-                            placeholder="0 = pa limit"
-                            min="0"
-                            max="10000"
-                            value="<?php echo $eventData['max_participants']; ?>"
-                        >
-                    </div>
+                <div class="form-group">
+                    <label for="image">Imazhi i Eventit (opsionale)</label>
+                    <input 
+                        type="file" 
+                        id="image" 
+                        name="image" 
+                        accept="image/*"
+                    >
+                    <small>Ngarko një imazh që përshkruan eventin. Formatet e lejuara: JPG, PNG, GIF, WebP (max 10MB)</small>
                 </div>
 
                 <div class="form-actions">

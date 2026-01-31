@@ -36,18 +36,22 @@ class EventService
             if (!$uploadResult['success']) {
                 return $uploadResult;
             }
-            $imagePath = $uploadResult['filename'];
+            $imagePath = 'uploads/events/' . $uploadResult['filename'];
         }
 
+        $eventDateTime = $data['event_date'];
+        if (!empty($data['event_time'])) {
+            $eventDateTime = $data['event_date'] . ' ' . $data['event_time'];
+        }
+        
         $eventId = $this->eventRepo->insert([
             'title' => Validator::sanitize($data['title']),
             'description' => Validator::sanitize($data['description']),
             'image' => $imagePath,
-            'event_date' => $data['event_date'],
-            'event_time' => $data['event_time'],
+            'event_date' => $eventDateTime,
             'location' => Validator::sanitize($data['location']),
             'category' => Validator::sanitize($data['category'] ?? ''),
-            'user_id' => $data['user_id'] ?? 0
+            'organizer_id' => $data['user_id'] ?? 0
         ]);
 
         return ['success' => true, 'event_id' => $eventId];
@@ -72,11 +76,15 @@ class EventService
             return ['success' => false, 'error' => $validator->getFirstError()];
         }
 
+        $eventDateTime = $data['event_date'];
+        if (!empty($data['event_time'])) {
+            $eventDateTime = $data['event_date'] . ' ' . $data['event_time'];
+        }
+        
         $updateData = [
             'title' => Validator::sanitize($data['title']),
             'description' => Validator::sanitize($data['description']),
-            'event_date' => $data['event_date'],
-            'event_time' => $data['event_time'],
+            'event_date' => $eventDateTime,
             'location' => Validator::sanitize($data['location']),
             'category' => Validator::sanitize($data['category'] ?? '')
         ];
@@ -87,9 +95,10 @@ class EventService
                 return $uploadResult;
             }
             if ($event['image']) {
-                $this->uploadService->delete($event['image']);
+                $oldFilename = basename($event['image']);
+                $this->uploadService->delete($oldFilename);
             }
-            $updateData['image'] = $uploadResult['filename'];
+            $updateData['image'] = 'uploads/events/' . $uploadResult['filename'];
         }
 
         $this->eventRepo->update($id, $updateData);
@@ -104,7 +113,8 @@ class EventService
         }
 
         if ($event['image']) {
-            $this->uploadService->delete($event['image']);
+            $oldFilename = basename($event['image']);
+            $this->uploadService->delete($oldFilename);
         }
 
         $this->eventRepo->delete($id);
