@@ -23,6 +23,7 @@ $role = $_SESSION['role'] ?? null;
             <li><a href="groups.php">Grupet</a></li>
             <li><a href="about.php">Rreth Nesh</a></li>
             <li><a href="contacts.php">Kontakt</a></li>
+            <li><a href="news.php">Lajmet</a></li>
         </ul>
 
         <div class="auth-buttons">

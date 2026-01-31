@@ -33,7 +33,7 @@ $role = $_SESSION['role'] ?? 'user';
             <div class="dashboard-sidebar-section">
                 <h4>Admin</h4>
                 <ul class="dashboard-sidebar-nav">
-                    <li><a href="admin_panel.php">Admin Panel</a></li>
+                    <li><a href="admin/index.php">Admin Panel</a></li>
                     <li><a href="manage_users.php">Menaxho Përdoruesit</a></li>
                 </ul>
             </div>

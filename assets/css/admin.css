@@ -1,0 +1,140 @@
+.admin-wrap { 
+    display: flex; 
+    min-height: 100vh; 
+}
+
+.admin-sidebar { 
+    width: 240px; 
+    background: #0f172a; 
+    color: #e5e7eb; 
+    padding: 1.5rem; 
+    flex-shrink: 0; 
+}
+
+.admin-sidebar h2 { 
+    font-size: 1rem; 
+    margin-bottom: 1rem; 
+    color: #94a3b8; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+}
+
+.admin-sidebar ul { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.admin-sidebar li { 
+    margin-bottom: 0.25rem; 
+}
+
+.admin-sidebar a { 
+    display: block; 
+    padding: 0.5rem 0.75rem; 
+    border-radius: 8px; 
+    color: #e5e7eb; 
+    text-decoration: none; 
+}
+
+.admin-sidebar a:hover, .admin-sidebar a.active { 
+    background: rgba(148,163,184,0.2); 
+}
+
+.admin-main { 
+    flex: 1; 
+    padding: 2rem; 
+    background: #f1f5f9; 
+}
+
+.admin-top { 
+    margin-bottom: 1.5rem; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.admin-top h1 { 
+    font-size: 1.5rem; 
+}
+
+.admin-table { 
+    width: 100%; 
+    background: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); 
+    border-collapse: collapse; 
+}
+
+.admin-table th, .admin-table td { 
+    padding: 0.75rem 1rem; 
+    text-align: left; 
+    border-bottom: 1px solid #e2e8f0; 
+}
+
+.admin-table th { 
+    background: #f8fafc; 
+    font-weight: 600; 
+    font-size: 0.85rem; 
+}
+
+.admin-table tr:last-child td { 
+    border-bottom: 0; 
+}
+
+.btn-sm { 
+    padding: 0.35rem 0.75rem; 
+    font-size: 0.85rem; 
+    border-radius: 8px; 
+    text-decoration: none; 
+    display: inline-block; 
+}
+
+.btn-primary { 
+    background: var(--primary); 
+    color: #fff; 
+    border: none; 
+}
+
+.btn-secondary { 
+    background: #e2e8f0; 
+    color: #334155; 
+}
+
+.btn-danger { 
+    background: #dc2626; 
+    color: #fff; 
+}
+
+.admin-form .form-group { 
+    margin-bottom: 1rem; 
+}
+
+.admin-form label { 
+    display: block; 
+    font-weight: 600; 
+    margin-bottom: 0.35rem; 
+}
+
+.admin-form input[type="text"], 
+.admin-form input[type="number"], 
+.admin-form input[type="url"], 
+.admin-form textarea { 
+    width: 100%; 
+    max-width: 500px; 
+    padding: 0.5rem 0.75rem; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 8px; 
+}
+
+.admin-form textarea { 
+    min-height: 120px; 
+}
+
+.admin-card { 
+    background: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); 
+    padding: 1.5rem; 
+    max-width: 700px; 
+}
