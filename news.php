@@ -8,18 +8,33 @@ $offset = ($page - 1) * $perPage;
 
 $limit = (int) $perPage;
 $offset = (int) $offset;
+$categories = [];
+try {
+    $stmt = $pdo->query("SELECT DISTINCT category FROM news WHERE category != '' ORDER BY category");
+    $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
+} catch (PDOException $e) {
+}
+
+$newsList = [];
+$total = 0;
 if ($category !== '') {
-    $stmt = $pdo->prepare('SELECT COUNT(*) FROM news WHERE category = ?');
-    $stmt->execute([$category]);
-    $total = (int) $stmt->fetchColumn();
-    $stmt = $pdo->prepare('SELECT * FROM news WHERE category = ? ORDER BY created_at DESC LIMIT ' . $limit . ' OFFSET ' . $offset);
-    $stmt->execute([$category]);
-} else {
+    try {
+        $stmt = $pdo->prepare('SELECT COUNT(*) FROM news WHERE category = ?');
+        $stmt->execute([$category]);
+        $total = (int) $stmt->fetchColumn();
+        $stmt = $pdo->prepare('SELECT * FROM news WHERE category = ? ORDER BY created_at DESC LIMIT ' . $limit . ' OFFSET ' . $offset);
+        $stmt->execute([$category]);
+        $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        $category = '';
+    }
+}
+if ($category === '') {
     $stmt = $pdo->query('SELECT COUNT(*) FROM news');
     $total = (int) $stmt->fetchColumn();
     $stmt = $pdo->query('SELECT * FROM news ORDER BY created_at DESC LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-$newsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $totalPages = $total ? (int) ceil($total / $perPage) : 1;
 
 
@@ -59,7 +74,7 @@ $totalPages = $total ? (int) ceil($total / $perPage) : 1;
                         </div>
                         <?php endif; ?>
                         <div class="card-body">
-                            <?php if (!empty($item['category'])): ?>
+                            <?php if (!empty($item['category'] ?? '')): ?>
                                 <span class="tag tag-art"><?php echo htmlspecialchars($item['category']); ?></span>
                             <?php endif; ?>
                             <h3><a href="news_detail.php?id=<?php echo (int)$item['id']; ?>"><?php echo htmlspecialchars($item['title']); ?></a></h3>

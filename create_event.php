@@ -7,6 +7,11 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+
+header("Cache-Control: no-cache, no-store, must-revalidate"); 
+header("Pragma: no-cache");
+header("Expires: 0"); 
+
 $userId = (int) $_SESSION['user_id'];
 $role = $_SESSION['role'] ?? 'user';
 $fullName = $_SESSION['full_name'] ?? 'Përdorues';
@@ -271,6 +276,15 @@ $categories = ['Teknologji', 'Sport', 'Kultura', 'Biznes', 'Edukimi', 'Muzikë',
 <?php require_once 'includes/footer.php'; ?>
 
 <script src="assets/js/create_event.js" defer></script>
-
+<script>
+(function(){
+    localStorage.setItem('isLoggedIn', '1');
+    window.addEventListener('pageshow', function(e) {
+        if (!localStorage.getItem('isLoggedIn') || e.persisted) {
+            window.location.replace('login.php');
+        }
+    });
+})();
+</script>
 </body>
 </html>

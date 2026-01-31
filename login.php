@@ -1,6 +1,10 @@
 <?php
 require_once 'includes/services/AuthService.php';
 
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 $authService = new AuthService();
 
 if ($authService->isLoggedIn()) {
@@ -130,5 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php require_once 'includes/footer.php'; ?>
 
     <script src="assets/js/login.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        });
+    </script>
 </body>
 </html>

@@ -19,12 +19,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (strlen($title) < 2) $errors[] = 'Titulli duhet te kete te pakten 2 karaktere.';
     if (strlen($content) < 10) $errors[] = 'Permbajtja duhet te kete te pakten 10 karaktere.';
     if (empty($errors)) {
+        $userId = (int) ($_SESSION['user_id'] ?? 0);
         if ($id > 0) {
-            $stmt = $pdo->prepare('UPDATE news SET title = ?, content = ?, category = ?, image = ? WHERE id = ?');
-            $stmt->execute([$title, $content, $category, $image ?: null, $id]);
+            try {
+                $stmt = $pdo->prepare('UPDATE news SET title = ?, content = ?, category = ?, image = ? WHERE id = ?');
+                $stmt->execute([$title, $content, $category, $image ?: null, $id]);
+            } catch (PDOException $e) {
+                $stmt = $pdo->prepare('UPDATE news SET title = ?, content = ?, image = ? WHERE id = ?');
+                $stmt->execute([$title, $content, $image ?: null, $id]);
+            }
         } else {
-            $stmt = $pdo->prepare('INSERT INTO news (title, content, category, image, id) VALUES (?, ?, ?, ?, ?)');
-            $stmt->execute([$title, $content, $category, $image ?: null, $_SESSION['id'] ?? 0]);
+            try {
+                $stmt = $pdo->prepare('INSERT INTO news (title, content, category, image, user_id) VALUES (?, ?, ?, ?, ?)');
+                $stmt->execute([$title, $content, $category, $image ?: null, $userId]);
+            } catch (PDOException $e) {
+                $stmt = $pdo->prepare('INSERT INTO news (title, content, image, user_id) VALUES (?, ?, ?, ?)');
+                $stmt->execute([$title, $content, $image ?: null, $userId]);
+            }
         }
         header('Location: news_list.php');
         exit;

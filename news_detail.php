@@ -32,8 +32,8 @@ if (!$item) {
                 <?php if (!empty($item['image'])): ?>
                     <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="" class="event-image">
                 <?php endif; ?>
-                <?php if (!empty($item['category'])): ?>
-                    <span class="tag tag-art"><?php echo htmlspecialchars($item['category']); ?></span>
+                <?php if (!empty($item['category'] ?? '')): ?>
+                    <span class="tag tag-art"><?php echo htmlspecialchars($item['category'] ?? ''); ?></span>
                 <?php endif; ?>
                 <h1><?php echo htmlspecialchars($item['title']); ?></h1>
                 <p class="event-date"><?php echo date('d M Y', strtotime($item['created_at'])); ?></p>
