@@ -25,9 +25,57 @@ function handleJoinGroup() {
     alert('Funksioni i bashkimit do të shtohet së shpejti!');
 }
 
-function handleCreateGroup(event) {
+async function deleteGroup(id) {
+    if (!confirm('A jeni të sigurt që dëshironi të fshini këtë grup?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('delete_group.php?id=' + id);
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Grupi u fshi me sukses!');
+            window.location.reload();
+        } else {
+            alert(data.error || 'Gabim gjatë fshirjes së grupit.');
+        }
+    } catch (error) {
+        alert('Gabim në lidhje me serverin.');
+    }
+}
+
+async function handleCreateGroup(event) {
     event.preventDefault();
-    document.getElementById('createGroupForm').submit();
+    
+    const form = document.getElementById('createGroupForm');
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Duke krijuar...';
+    
+    try {
+        const response = await fetch('create_group.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('Grupi u krijua me sukses!');
+            toggleCreateGroupModal();
+            window.location.reload();
+        } else {
+            alert(data.error || 'Gabim gjatë krijimit të grupit.');
+        }
+    } catch (error) {
+        alert('Gabim në lidhje me serverin.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '✅ Krijo Grupin';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

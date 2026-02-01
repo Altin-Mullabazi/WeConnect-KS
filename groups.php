@@ -1,3 +1,18 @@
+<?php
+require_once 'includes/services/GroupService.php';
+require_once 'includes/services/AuthService.php';
+
+session_start();
+
+$groupService = new GroupService();
+$authService = new AuthService();
+
+$groups = $groupService->getAll();
+$isLoggedIn = $authService->isLoggedIn();
+$currentUser = $isLoggedIn ? $authService->getCurrentUser() : null;
+$isAdmin = $currentUser && ($currentUser['role'] ?? '') === 'admin';
+$userId = $isLoggedIn ? $authService->getCurrentUserId() : 0;
+?>
 <!DOCTYPE html>
 <html lang="sq">
 <head>
@@ -18,7 +33,9 @@
                     <h2>Bashkohu me Grupet Lokale</h2>
                     <p class="text-muted">Shfaq grupet lokale në Kosovë. Nga "Running Club Prishtina" deri te "Kosovo Board Gamers" - gjej komunitetin tuaj dhe krijo lidhje me njerez qe ndajne interesat e tua.</p>
                 </div>
+                <?php if ($isLoggedIn): ?>
                 <button class="btn-primary" onclick="toggleCreateGroupModal()">+ Krijo Grup</button>
+                <?php endif; ?>
             </div>
             <div class="filters-container">
                 <div class="filter-group">
@@ -50,60 +67,47 @@
             </div>
 
             <div class="groups-grid" id="groupsContainer">
-               
-                <div class="group-card">
-                    <img src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=600&h=400&fit=crop" alt="Running Club" class="group-card-image">
-                    <div class="group-card-body">
-                        <div class="group-card-header">
-                            <h3 class="group-card-title">Running Club Prishtina</h3>
-                        </div>
-                        <div class="group-card-meta">
-                            <span class="category-tag tag-sport">Sport</span>
-                            <span class="location-badge">📍 Prishtina</span>
-                        </div>
-                        <p class="group-card-desc">Vrapo bashke me komunitetin. Nga fillestaret deri te profesionistet, te gjithe jane te mirepritur.</p>
-                        <div class="group-card-footer">
-                            <span class="members-count">👥 156 anëtarë</span>
-                            <button class="btn-join" data-name="Running Club Prishtina" data-category="Sport" data-location="Prishtina" data-members="156" data-desc="Vrapo bashke me komunitetin. Nga fillestaret deri te profesionistet, te gjithe jane te mirepritur." data-image="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=600&h=400&fit=crop">Shfletoni</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group-card">
-                    <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&h=400&fit=crop" alt="Board Gamers" class="group-card-image">
-                    <div class="group-card-body">
-                        <div class="group-card-header">
-                            <h3 class="group-card-title">Kosovo Board Gamers</h3>
-                        </div>
-                        <div class="group-card-meta">
-                            <span class="category-tag tag-games">Lojëra</span>
-                            <span class="location-badge">📍 Prishtina</span>
-                        </div>
-                        <p class="group-card-desc">Lojerat e tabeles jane pasioni yne. Nga Chess deri te Catan, bashkohu per serat e ndezura.</p>
-                        <div class="group-card-footer">
-                            <span class="members-count">👥 89 anëtarë</span>
-                            <button class="btn-join" data-name="Kosovo Board Gamers" data-category="Lojëra" data-location="Prishtina" data-members="89" data-desc="Lojerat e tabeles jane pasioni yne. Nga Chess deri te Catan, bashkohu per serat e ndezura." data-image="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=600&h=400&fit=crop">Shfletoni</button>
+                <?php if (!empty($groups)): ?>
+                    <?php foreach ($groups as $group): ?>
+                    <?php 
+                        $canDelete = $isAdmin || ($group['creator_id'] ?? 0) == $userId;
+                        $defaultImage = 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=400&fit=crop';
+                        $groupImage = !empty($group['image']) ? htmlspecialchars($group['image']) : $defaultImage;
+                    ?>
+                    <div class="group-card">
+                        <img src="<?php echo $groupImage; ?>" alt="<?php echo htmlspecialchars($group['name']); ?>" class="group-card-image">
+                        <div class="group-card-body">
+                            <div class="group-card-header">
+                                <h3 class="group-card-title"><?php echo htmlspecialchars($group['name']); ?></h3>
+                            </div>
+                            <div class="group-card-meta">
+                                <span class="category-tag"><?php echo htmlspecialchars($group['category'] ?? ''); ?></span>
+                                <span class="location-badge">📍 <?php echo htmlspecialchars($group['location'] ?? ''); ?></span>
+                            </div>
+                            <p class="group-card-desc"><?php echo htmlspecialchars(mb_substr($group['description'] ?? '', 0, 120)); ?><?php echo mb_strlen($group['description'] ?? '') > 120 ? '...' : ''; ?></p>
+                            <div class="group-card-footer">
+                                <span class="members-count">👥 <?php echo (int)($group['members_count'] ?? 1); ?> anëtarë</span>
+                                <button class="btn-join" 
+                                    data-name="<?php echo htmlspecialchars($group['name']); ?>" 
+                                    data-category="<?php echo htmlspecialchars($group['category'] ?? ''); ?>" 
+                                    data-location="<?php echo htmlspecialchars($group['location'] ?? ''); ?>" 
+                                    data-members="<?php echo (int)($group['members_count'] ?? 1); ?>" 
+                                    data-desc="<?php echo htmlspecialchars($group['description'] ?? ''); ?>" 
+                                    data-image="<?php echo $groupImage; ?>">Shfletoni</button>
+                                <?php if ($canDelete): ?>
+                                <button class="btn-delete" onclick="deleteGroup(<?php echo (int)$group['id']; ?>)" title="Fshi grupin">🗑️</button>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="group-card">
-                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop" alt="Book Club" class="group-card-image">
-                    <div class="group-card-body">
-                        <div class="group-card-header">
-                            <h3 class="group-card-title">Book Club Prishtina</h3>
-                        </div>
-                        <div class="group-card-meta">
-                            <span class="category-tag tag-books">Libra</span>
-                            <span class="location-badge">📍 Prishtina</span>
-                        </div>
-                        <p class="group-card-desc">Diskuto librat me njerez qe duan te ndajne mendimet e tyre. Bashkohu per lexime te gjalla.</p>
-                        <div class="group-card-footer">
-                            <span class="members-count">👥 203 anëtarë</span>
-                            <button class="btn-join" data-name="Book Club Prishtina" data-category="Libra" data-location="Prishtina" data-members="203" data-desc="Diskuto librat me njerez qe duan te ndajne mendimet e tyre. Bashkohu per lexime te gjalla." data-image="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop">Shfletoni</button>
-                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>Nuk ka grupe ende</h3>
+                        <p>Bëhu i pari që krijon një grup!</p>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>
@@ -115,7 +119,7 @@
                 <h3 style="margin: 0; color: white;">✨ Krijo një Grup të Ri</h3>
                 <button class="modal-close" onclick="toggleCreateGroupModal()" style="color: white;">&times;</button>
             </div>
-            <form id="createGroupForm" onsubmit="handleCreateGroup(event)" method="POST" action="create_group.php">
+            <form id="createGroupForm" onsubmit="handleCreateGroup(event)">
                 <div style="padding: 24px;">
                     <div class="form-section" style="padding: 15px 0; border-bottom: 1px solid #e2e8f0;">
                         <h4 style="margin-top: 0; margin-bottom: 15px; color: var(--primary); font-size: 16px;">Informacion Bazik</h4>
