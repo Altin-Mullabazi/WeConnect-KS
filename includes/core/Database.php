@@ -8,7 +8,7 @@ class Database
     private function __construct()
     {
         $host = 'localhost';
-        $port = '3307';
+        $port = '3306';
         $dbname = 'weconnect-ks';
         $user = 'root';
         $pass = '';

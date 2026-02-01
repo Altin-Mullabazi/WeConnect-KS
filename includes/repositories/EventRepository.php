@@ -26,7 +26,7 @@ class EventRepository extends BaseRepository
 
     public function findByUser(int $userId): array
     {
-        return $this->findBy(['user_id' => $userId]);
+        return $this->findBy(['organizer_id' => $userId]);
     }
 
     public function findByDateRange(string $startDate, string $endDate): array

@@ -155,4 +155,9 @@ class EventService
     {
         return $this->eventRepo->getCategories();
     }
+
+    public function getByOrganizer(int $userId): array
+    {
+        return $this->eventRepo->findByUser($userId);
+    }
 }
